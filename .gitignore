@@ -1,0 +1,16 @@
+code/*.csproj
+code/obj
+code/Properties/launchSettings.json
+.intermediate
+tools_asset_info.bin
+_bakeresourcecache
+tools_thumbnail_cache.bin
+*.vmat
+*.png
+*.tif
+*.vmdl
+*.dmx
+*.fbx
+*.vpcf
+*.mp3
+*.sound
