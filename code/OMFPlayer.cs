@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OneMoreFloor
 {
-	partial class MinimalPlayer : Player
+	partial class OMFPlayer : Player
 	{
 		public override void Respawn()
 		{
@@ -41,7 +41,7 @@ namespace OneMoreFloor
 			base.Simulate( cl );
 
 			//
-			// If you have active children (like a weapon etc) you should call this to 
+			// If you have active children (like a weapon etc) you should call this to
 			// simulate those too.
 			//
 			SimulateActiveChild( cl, ActiveChild );
@@ -52,7 +52,7 @@ namespace OneMoreFloor
 			if ( IsServer && Input.Pressed( InputButton.Attack1 ) )
 			{
 				var ragdoll = new ModelEntity();
-				ragdoll.SetModel( "models/citizen/citizen.vmdl" );  
+				ragdoll.SetModel( "models/citizen/citizen.vmdl" );
 				ragdoll.Position = EyePos + EyeRot.Forward * 40;
 				ragdoll.Rotation = Rotation.LookAt( Vector3.Random.Normal );
 				ragdoll.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );

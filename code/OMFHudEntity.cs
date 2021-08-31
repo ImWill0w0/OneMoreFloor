@@ -9,13 +9,13 @@ namespace OneMoreFloor
 	/// This is the HUD entity. It creates a RootPanel clientside, which can be accessed
 	/// via RootPanel on this entity, or Local.Hud.
 	/// </summary>
-	public partial class MinimalHudEntity : Sandbox.HudEntity<RootPanel>
+	public partial class OMFHudEntity : Sandbox.HudEntity<RootPanel>
 	{
-		public MinimalHudEntity()
+		public OMFHudEntity()
 		{
 			if ( IsClient )
 			{
-				RootPanel.SetTemplate( "/minimalhud.html" );
+				//RootPanel.SetTemplate( "/minimalhud.html" );
 			}
 		}
 	}
