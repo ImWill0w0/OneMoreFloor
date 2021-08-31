@@ -6,20 +6,47 @@ namespace OneMoreFloor
 {
 	partial class OMFPlayer : Player, ICanRideElevator
 	{
+		private DamageInfo lastDamage;
+
+		[Net, Predicted] public ICamera MainCamera { get; set; }
+		public ICamera LastCamera { get; set; }
+
+		public OMFPlayer()
+		{
+			//Inventory = new Inventory( this );
+		}
+
+		public override void Spawn()
+		{
+			MainCamera = new FirstPersonCamera();
+			LastCamera = MainCamera;
+
+			base.Spawn();
+		}
+
 		public override void Respawn()
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
 
 			Controller = new WalkController();
-
 			Animator = new StandardPlayerAnimator();
 
-			Camera = new FirstPersonCamera();
+			MainCamera = LastCamera;
+			Camera = MainCamera;
+
+			if ( DevController is NoclipController )
+			{
+				DevController = null;
+			}
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
+
+			this.Dress();
+
+			//Inventory.Add( new PhysGun(), true );
 
 			base.Respawn();
 		}
@@ -30,6 +57,14 @@ namespace OneMoreFloor
 		public override void Simulate( Client cl )
 		{
 			base.Simulate( cl );
+
+			if ( Input.ActiveChild != null )
+			{
+				ActiveChild = Input.ActiveChild;
+			}
+
+			if ( LifeState != LifeState.Alive )
+				return;
 
 			this.TickPlayerUse();
 			SimulateActiveChild( cl, ActiveChild );
@@ -88,7 +123,38 @@ namespace OneMoreFloor
 		{
 			base.OnKilled();
 
+			if ( lastDamage.Flags.HasFlag( DamageFlags.Vehicle ) )
+			{
+				Particles.Create( "particles/impact.flesh.bloodpuff-big.vpcf", lastDamage.Position );
+				Particles.Create( "particles/impact.flesh-big.vpcf", lastDamage.Position );
+				PlaySound( "kersplat" );
+			}
+
+			BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
+			LastCamera = MainCamera;
+			MainCamera = new SpectateRagdollCamera();
+			Camera = MainCamera;
+			Controller = null;
+
+			EnableAllCollisions = false;
 			EnableDrawing = false;
+
+			//Inventory.DropActive();
+			//Inventory.DeleteContents();
+		}
+
+		public override void TakeDamage( DamageInfo info )
+		{
+			if ( GetHitboxGroup( info.HitboxIndex ) == 1 )
+			{
+				info.Damage *= 10.0f;
+			}
+
+			lastDamage = info;
+
+			//TookDamage( lastDamage.Flags, lastDamage.Position, lastDamage.Force );
+
+			base.TakeDamage( info );
 		}
 	}
 }
