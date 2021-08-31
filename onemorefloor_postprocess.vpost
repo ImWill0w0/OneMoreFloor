@@ -4,6 +4,37 @@
 	m_layers = 
 	[
 		{
+			_class = "CBloomLayer"
+			m_name = "Bloom 0"
+			m_nOpacityPercent = 100
+			m_bVisible = true
+			m_pLayerMask = null
+			m_params = 
+			{
+				m_blendMode = "BLOOM_BLEND_ADD"
+				m_flBloomStrength = 1.067
+				m_flScreenBloomStrength = 1.0
+				m_flBlurBloomStrength = 1.0
+				m_flBloomThreshold = 0.0
+				m_flBloomThresholdWidth = 4.9995
+				m_flSkyboxBloomStrength = 1.0
+				m_flBloomStartValue = 1.0
+				m_flBlurWeight = 
+				[
+					1.0, 1.0, 1.0, 1.0,
+					1.0,
+				]
+				m_vBlurTint = 
+				[
+					[ 1.0, 1.0, 1.0 ],
+					[ 1.0, 1.0, 1.0 ],
+					[ 1.0, 1.0, 1.0 ],
+					[ 1.0, 1.0, 1.0 ],
+					[ 1.0, 1.0, 1.0 ],
+				]
+			}
+		},
+		{
 			_class = "CToneMappingLayer"
 			m_name = "Tone Mapping 0"
 			m_nOpacityPercent = 100
@@ -11,14 +42,14 @@
 			m_pLayerMask = null
 			m_params = 
 			{
-				m_flExposureBias = 0.0
-				m_flShoulderStrength = 0.15
-				m_flLinearStrength = 0.5
-				m_flLinearAngle = 0.1
-				m_flToeStrength = 0.2
-				m_flToeNum = 0.02
-				m_flToeDenom = 0.3
-				m_flWhitePoint = 4.0
+				m_flExposureBias = 1.204
+				m_flShoulderStrength = 0.4096
+				m_flLinearStrength = 1.0
+				m_flLinearAngle = 0.0201
+				m_flToeStrength = 1.0
+				m_flToeNum = 0.0158
+				m_flToeDenom = 1.0
+				m_flWhitePoint = 2.4822
 			}
 		},
 	]

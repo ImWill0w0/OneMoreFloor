@@ -22,6 +22,8 @@ namespace OneMoreFloor
 			EnableShadowInFirstPerson = true;
 
 			base.Respawn();
+
+			Inventory.Add( new arm(), true );
 		}
 
 		/// <summary>
