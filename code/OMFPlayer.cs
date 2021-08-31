@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OneMoreFloor
 {
-	partial class OMFPlayer : Player
+	partial class OMFPlayer : Player, ICanRideElevator
 	{
 		public override void Respawn()
 		{

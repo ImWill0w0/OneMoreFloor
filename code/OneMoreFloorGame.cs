@@ -1,35 +1,28 @@
-﻿
-using Sandbox;
+﻿using Sandbox;
 using Sandbox.UI.Construct;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using OneMoreFloor.Entities;
 
-//
-// You don't need to put things in a namespace, but it doesn't hurt.
-//
 namespace OneMoreFloor
 {
-
-	/// <summary>
-	/// This is your game class. This is an entity that is created serverside when
-	/// the game starts, and is replicated to the client.
-	///
-	/// You can use this to create things like HUDs and declare which player class
-	/// to use for spawned players.
-	/// </summary>
 	public partial class OneMoreFloorGame : Sandbox.Game
 	{
+		public static OneMoreFloorGame Instance { get; private set; }
+
+		private List<string> seenFloors = new();
+
 		public OneMoreFloorGame()
 		{
+			Instance = this;
+
 			if ( IsServer )
 			{
 				Log.Info( "My Gamemode Has Created Serverside!" );
 
-				// Create a HUD entity. This entity is globally networked
-				// and when it is created clientside it creates the actual
-				// UI panels. You don't have to create your HUD via an entity,
-				// this just feels like a nice neat way to do it.
 				new OMFHudEntity();
 			}
 
@@ -37,6 +30,22 @@ namespace OneMoreFloor
 			{
 				Log.Info( "My Gamemode Has Created Clientside!" );
 			}
+		}
+
+		public FloorMarkerEntity GetNextFloor()
+		{
+			var floors = All.OfType<FloorMarkerEntity>();
+			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) );
+
+			if ( !floorsUnseen.Any() )
+			{
+				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
+				return floors.Random();
+			}
+
+			var nextFloor = floorsUnseen.Random();
+			this.seenFloors.Add( nextFloor.EntityName );
+			return nextFloor;
 		}
 
 		/// <summary>
