@@ -13,7 +13,7 @@ namespace OneMoreFloor
 
 		public OMFPlayer()
 		{
-			//Inventory = new Inventory( this );
+			Inventory = new Inventory( this );
 		}
 
 		public override void Spawn()
@@ -46,11 +46,9 @@ namespace OneMoreFloor
 
 			this.Dress();
 
-			//Inventory.Add( new PhysGun(), true );
+			Inventory.Add( new arm(), true );
 
 			base.Respawn();
-
-			Inventory.Add( new arm(), true );
 		}
 
 		/// <summary>
@@ -141,8 +139,8 @@ namespace OneMoreFloor
 			EnableAllCollisions = false;
 			EnableDrawing = false;
 
-			//Inventory.DropActive();
-			//Inventory.DeleteContents();
+			Inventory.DropActive();
+			Inventory.DeleteContents();
 		}
 
 		public override void TakeDamage( DamageInfo info )
