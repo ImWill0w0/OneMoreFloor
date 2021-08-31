@@ -4,6 +4,7 @@ using Sandbox;
 namespace OneMoreFloor.Entities
 {
     [Library("ent_omf_floormarker", Title = "OMF Floor Marker", Description = "Marks an elevator floor for One More Floor.", Editable = true, Spawnable = true, Icon = "attribution")]
+    [Hammer.EditorSprite("editor/omf_floormarker.vmat")]
     public partial class FloorMarkerEntity : Entity
     {
 	    private const int TeleportDistanceUnits = 300;

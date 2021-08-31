@@ -1,7 +1,7 @@
 // 
 // OneMoreFloor.Entities.FloorMarkerEntity : Sandbox.Entity 
 // 
-@PointClass = ent_omf_floormarker : "Marks an elevator floor for One More Floor."
+@PointClass iconsprite( "editor/omf_floormarker.vmat" ) = ent_omf_floormarker : "Marks an elevator floor for One More Floor."
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
