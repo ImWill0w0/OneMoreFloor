@@ -35,17 +35,31 @@ namespace OneMoreFloor
 		public FloorMarkerEntity GetNextFloor()
 		{
 			var floors = All.OfType<FloorMarkerEntity>();
-			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) );
+			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby );
 
 			if ( !floorsUnseen.Any() )
 			{
 				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
-				return floors.Random();
+				return floors.Where( x => !x.IsLobby ).Random();
 			}
 
 			var nextFloor = floorsUnseen.Random();
 			this.seenFloors.Add( nextFloor.EntityName );
 			return nextFloor;
+		}
+
+		[ServerCmd("omf_debug_teleport")]
+		public static void DebugTriggerTeleport(string entName)
+		{
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+
+			if ( target == null )
+			{
+				Log.Error( $"Could not find entity with name '{entName}'" );
+				return;
+			}
+
+			target.Teleport();
 		}
 
 		/// <summary>
