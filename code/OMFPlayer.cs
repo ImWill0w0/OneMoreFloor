@@ -49,6 +49,8 @@ namespace OneMoreFloor
 			//Inventory.Add( new PhysGun(), true );
 
 			base.Respawn();
+
+			Inventory.Add( new arm(), true );
 		}
 
 		/// <summary>
