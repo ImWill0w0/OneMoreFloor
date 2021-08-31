@@ -8,5 +8,7 @@
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input Teleport(void) : "Activates teleport to an in this session unseen floor."
+
+	output OnArrival(void) : "Fires when a teleport to this floor is activated."
 ]
 

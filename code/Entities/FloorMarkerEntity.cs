@@ -4,9 +4,14 @@ using Sandbox;
 namespace OneMoreFloor.Entities
 {
     [Library("ent_omf_floormarker", Title = "OMF Floor Marker", Description = "Marks an elevator floor for One More Floor.", Editable = true, Spawnable = true, Icon = "attribution")]
-    public class FloorMarkerEntity : Entity
+    public partial class FloorMarkerEntity : Entity
     {
 	    private const int TeleportDistanceUnits = 300;
+
+	    /// <summary>
+	    /// Fires when a teleport to this floor is activated.
+	    /// </summary>
+	    protected Output OnArrival { get; set; }
 
         /// <summary>
         /// Activates teleport to an in this session unseen floor.
@@ -22,6 +27,8 @@ namespace OneMoreFloor.Entities
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
 
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count()} entities to {nextFloor.EntityName}" );
+
+	        var _ = nextFloor.OnArrival.Fire( this );
         }
     }
 }
