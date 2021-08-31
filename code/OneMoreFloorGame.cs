@@ -40,7 +40,15 @@ namespace OneMoreFloor
 			if ( !floorsUnseen.Any() )
 			{
 				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
-				return floors.Where( x => !x.IsLobby ).Random();
+
+				var randomFloor = floors.Where( x => !x.IsLobby ).Random();
+				if ( randomFloor == null )
+				{
+					// TODO: We should probably force people to the top floor here
+					return floors.ElementAt( 0 );
+				}
+
+				return randomFloor;
 			}
 
 			var nextFloor = floorsUnseen.Random();

@@ -49,14 +49,17 @@ namespace OneMoreFloor.Entities
 		        }
 
 		        return true;
-	        } ).OfType<ICanRideElevator>().ToList();
+	        } ).Where(x => x is ICanRideElevator).ToList();
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
 
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
 
 	        foreach ( var teleEnt in eligibleToTeleport )
 	        {
+		        var localTransform = Transform.ToLocal( teleEnt.Transform );
+		        var newTransform = nextFloor.Transform.ToWorld( localTransform );
 
+		        teleEnt.Position = newTransform.Position;
 	        }
 
 	        var _ = nextFloor.OnArrival.Fire( this );
