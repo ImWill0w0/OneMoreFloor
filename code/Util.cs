@@ -11,7 +11,7 @@ namespace OneMoreFloor
 			if ( !enumerable.Any() )
 				return default;
 
-			var choice = Rand.Int( 0, enumerable.Count() );
+			var choice = Rand.Int( 0, enumerable.Count() - 1 );
 			return enumerable.ElementAt( choice );
 		}
 	}
