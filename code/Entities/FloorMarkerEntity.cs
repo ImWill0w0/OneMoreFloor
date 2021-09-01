@@ -72,7 +72,9 @@ namespace OneMoreFloor.Entities
 		        teleEnt.Position = newTransform.Position;
 	        }
 
-	        nextFloor.IsOccupied = true;
+	        if (!nextFloor.IsLobby)
+				nextFloor.IsOccupied = true;
+
 	        var _ = nextFloor.OnArrival.Fire( this );
 
 	        IsOccupied = false;
