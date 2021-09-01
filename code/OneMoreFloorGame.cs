@@ -35,13 +35,13 @@ namespace OneMoreFloor
 		public FloorMarkerEntity GetNextFloor( FloorMarkerEntity lastFloor )
 		{
 			var floors = All.OfType<FloorMarkerEntity>();
-			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby );
+			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby && !x.IsOccupied );
 
 			if ( !floorsUnseen.Any() )
 			{
 				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
 
-				var randomFloor = floors.Where( x => !x.IsLobby ).Random();
+				var randomFloor = floors.Where( x => !x.IsLobby && !x.IsOccupied ).Random();
 				if ( randomFloor == null )
 				{
 					// TODO: We should probably force people to the top floor here
