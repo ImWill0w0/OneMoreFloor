@@ -83,7 +83,7 @@ namespace OneMoreFloor.Entities
 
 		        if ( !string.IsNullOrWhiteSpace( nextFloor.FloorBgm ) && teleEnt is OMFPlayer player )
 		        {
-			        player.PlayFloorBgm( nextFloor.FloorBgm, nextFloor.BgmDuration );
+			        player.PlayFloorBgm( To.Single( player ), nextFloor.Position, nextFloor.FloorBgm, nextFloor.BgmDuration );
 		        }
 
 		        teleEnt.Position = newTransform.Position;

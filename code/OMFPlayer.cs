@@ -3,7 +3,8 @@ using System;
 
 namespace OneMoreFloor
 {
-	partial class OMFPlayer : Player, ICanRideElevator
+	[Library]
+	public partial class OMFPlayer : Player, ICanRideElevator
 	{
 		private DamageInfo lastDamage;
 
@@ -56,7 +57,7 @@ namespace OneMoreFloor
 		}
 
 		[ClientRpc]
-		public void PlayFloorBgm( string bgmPath, int durationMs )
+		public void PlayFloorBgm( Vector3 origin, string bgmPath, int durationMs )
 		{
 			Host.AssertClient();
 
@@ -68,8 +69,7 @@ namespace OneMoreFloor
 
 			this.bgm.Stop();
 
-			// TODO: allow passing in an entity the sound originates from?
-			this.bgm = this.PlaySound( bgmPath );
+			this.bgm = Sound.FromWorld( bgmPath, origin );
 			this.bgm.SetVolume( 1.0f );
 		}
 
