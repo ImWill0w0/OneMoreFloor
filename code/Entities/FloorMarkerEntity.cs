@@ -9,7 +9,7 @@ namespace OneMoreFloor.Entities
     {
 	    public bool IsOccupied { get; set; }
 
-	    private static Vector3 TeleportExtents => new Vector3( 100, 100, 100 );
+	    private static Vector3 TeleportExtents => new( 120, 120, 120 );
 
 	    /// <summary>
 	    /// Fires when a teleport to this floor is activated.
