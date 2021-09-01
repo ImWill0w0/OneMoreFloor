@@ -71,6 +71,8 @@ namespace OneMoreFloor
 
 			this.bgm = Sound.FromWorld( bgmPath, origin );
 			this.bgm.SetVolume( 1.0f );
+
+			DebugOverlay.Sphere( origin, 5, Color.Green, false, 2000 );
 		}
 
 		/// <summary>

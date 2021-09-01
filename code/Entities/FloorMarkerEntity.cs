@@ -40,6 +40,12 @@ namespace OneMoreFloor.Entities
 	    [Property( "bgm_duration", Group = "Sounds", Title = "BGM Duration(ms)" )]
 	    public int BgmDuration { get; set; } = 3000;
 
+	    /// <summary>
+	    /// The origin of the BGM.
+	    /// </summary>
+	    [Property( "bgm_origin_target", Group = "Sounds", FGDType = "target_destination", Title = "BGM Origin Entity")]
+	    public string BgmOriginName { get; set; }
+
 	    [Event.Tick]
 	    private void Tick()
 	    {
@@ -74,6 +80,8 @@ namespace OneMoreFloor.Entities
 	        } ).Where(x => x is ICanRideElevator).ToList();
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor( this );
 
+	        var bgmOrigin = FindByName( nextFloor.BgmOriginName, this );
+
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
 
 	        foreach ( var teleEnt in eligibleToTeleport )
@@ -83,7 +91,7 @@ namespace OneMoreFloor.Entities
 
 		        if ( !string.IsNullOrWhiteSpace( nextFloor.FloorBgm ) && teleEnt is OMFPlayer player )
 		        {
-			        player.PlayFloorBgm( To.Single( player ), nextFloor.Position, nextFloor.FloorBgm, nextFloor.BgmDuration );
+			        player.PlayFloorBgm( To.Single( player ), bgmOrigin.Position, nextFloor.FloorBgm, nextFloor.BgmDuration );
 		        }
 
 		        teleEnt.Position = newTransform.Position;

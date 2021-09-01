@@ -21,6 +21,7 @@
 	istop(boolean) : "Is Top floor" : 0 : "Whether or not this floor is the lobby."
 	floor_bgm(sound) [ group="Sounds" ] : "Floor BGM" : "" : "BGM for this floor. Will be faded in and out for each player in the floor."
 	bgm_duration(integer) [ group="Sounds" ] : "BGM Duration(ms)" : 3000 : "The duration this floor's BGM should be played for."
+	bgm_origin_target(target_destination) [ group="Sounds" ] : "BGM Origin Entity" :  : "The origin of the BGM."
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input Teleport(void) : "Activates teleport to an in this session unseen floor."
