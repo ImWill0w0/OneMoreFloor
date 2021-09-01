@@ -17,7 +17,8 @@
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
-	islobby(boolean) : "Is Lobby floor" : 0 : ""
+	islobby(boolean) : "Is Lobby floor" : 0 : "Whether or not this floor is the lobby."
+	floor_bgm(sound) [ group="Sounds" ] : "Floor BGM" : "" : "BGM for this floor. Will be faded in and out for each player in the floor."
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input Teleport(void) : "Activates teleport to an in this session unseen floor."

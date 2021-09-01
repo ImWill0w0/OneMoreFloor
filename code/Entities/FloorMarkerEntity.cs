@@ -16,8 +16,17 @@ namespace OneMoreFloor.Entities
 	    /// </summary>
 	    private Output OnArrival { get; set; }
 
+	    /// <summary>
+	    /// Whether or not this floor is the lobby.
+	    /// </summary>
 	    [Property( "islobby", Title = "Is Lobby floor" )]
 	    public bool IsLobby { get; set; }
+
+	    /// <summary>
+	    /// BGM for this floor. Will be faded in and out for each player in the floor.
+	    /// </summary>
+	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
+	    public string FloorBgm { get; set; } = "";
 
 	    [Event.Tick]
 	    private void Tick()
