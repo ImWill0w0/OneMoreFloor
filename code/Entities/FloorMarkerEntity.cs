@@ -7,7 +7,7 @@ namespace OneMoreFloor.Entities
     [Hammer.EditorSprite("editor/omf_floormarker.vmat")]
     public partial class FloorMarkerEntity : Entity
     {
-	    private const int TeleportDistanceUnits = 120;
+	    public bool IsOccupied { get; set; }
 
 	    private static Vector3 TeleportExtents => new Vector3( 100, 100, 100 );
 
@@ -32,6 +32,7 @@ namespace OneMoreFloor.Entities
 	    private void Tick()
 	    {
 		    DebugOverlay.Box( Position, -TeleportExtents, TeleportExtents, Color.White, depthTest: false);
+		    DebugOverlay.Text( Position, $"Floor: {EntityName}\nOccupied: {IsOccupied}", Color.White );
 	    }
 
 	    /// <summary>
@@ -59,7 +60,7 @@ namespace OneMoreFloor.Entities
 
 		        return true;
 	        } ).Where(x => x is ICanRideElevator).ToList();
-	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
+	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor( this );
 
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
 
@@ -71,7 +72,10 @@ namespace OneMoreFloor.Entities
 		        teleEnt.Position = newTransform.Position;
 	        }
 
+	        nextFloor.IsOccupied = true;
 	        var _ = nextFloor.OnArrival.Fire( this );
+
+	        IsOccupied = false;
         }
     }
 }

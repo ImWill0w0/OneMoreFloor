@@ -32,7 +32,7 @@ namespace OneMoreFloor
 			}
 		}
 
-		public FloorMarkerEntity GetNextFloor()
+		public FloorMarkerEntity GetNextFloor( FloorMarkerEntity lastFloor )
 		{
 			var floors = All.OfType<FloorMarkerEntity>();
 			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby );
