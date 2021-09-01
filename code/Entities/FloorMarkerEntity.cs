@@ -23,10 +23,22 @@ namespace OneMoreFloor.Entities
 	    public bool IsLobby { get; set; }
 
 	    /// <summary>
+	    /// Whether or not this floor is the lobby.
+	    /// </summary>
+	    [Property( "istop", Title = "Is Top floor" )]
+	    public bool IsTop { get; set; }
+
+	    /// <summary>
 	    /// BGM for this floor. Will be faded in and out for each player in the floor.
 	    /// </summary>
 	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
 	    public string FloorBgm { get; set; } = "";
+
+	    /// <summary>
+	    /// The duration this floor's BGM should be played for.
+	    /// </summary>
+	    [Property( "bgm_duration", Group = "Sounds", Title = "BGM Duration(ms)" )]
+	    public int BgmDuration { get; set; } = 3000;
 
 	    [Event.Tick]
 	    private void Tick()
@@ -68,6 +80,11 @@ namespace OneMoreFloor.Entities
 	        {
 		        var localTransform = Transform.ToLocal( teleEnt.Transform );
 		        var newTransform = nextFloor.Transform.ToWorld( localTransform );
+
+		        if ( !string.IsNullOrWhiteSpace( nextFloor.FloorBgm ) && teleEnt is OMFPlayer player )
+		        {
+			        player.PlayFloorBgm( nextFloor.FloorBgm, nextFloor.BgmDuration );
+		        }
 
 		        teleEnt.Position = newTransform.Position;
 	        }

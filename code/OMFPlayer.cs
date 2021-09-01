@@ -1,6 +1,5 @@
 ﻿using Sandbox;
 using System;
-using System.Linq;
 
 namespace OneMoreFloor
 {
@@ -10,6 +9,11 @@ namespace OneMoreFloor
 
 		[Net, Predicted] public ICamera MainCamera { get; set; }
 		public ICamera LastCamera { get; set; }
+
+		private DateTimeOffset timeSinceBgmStart;
+		private Sound bgm;
+		private bool isBgmActive = false;
+		private int bgmDuration;
 
 		public OMFPlayer()
 		{
@@ -51,6 +55,24 @@ namespace OneMoreFloor
 			base.Respawn();
 		}
 
+		[ClientRpc]
+		public void PlayFloorBgm( string bgmPath, int durationMs )
+		{
+			Host.AssertClient();
+
+			Log.Info( "[C] Playing BGM: " + bgmPath );
+
+			this.timeSinceBgmStart = DateTimeOffset.Now;
+			this.isBgmActive = true;
+			this.bgmDuration = durationMs;
+
+			this.bgm.Stop();
+
+			// TODO: allow passing in an entity the sound originates from?
+			this.bgm = this.PlaySound( bgmPath );
+			this.bgm.SetVolume( 1.0f );
+		}
+
 		/// <summary>
 		/// Called every tick, clientside and serverside.
 		/// </summary>
@@ -73,6 +95,18 @@ namespace OneMoreFloor
 			{
 				// TODO: Watch, cough
 			}
+
+			if ( IsClient )
+			{
+				if ( this.isBgmActive && (DateTimeOffset.Now - this.timeSinceBgmStart).TotalMilliseconds > this.bgmDuration )
+				{
+					this.isBgmActive = false;
+					this.bgm.SetVolume( 0 );
+				}
+
+				DebugOverlay.ScreenText( 10, "BGM Active: " + this.isBgmActive );
+				DebugOverlay.ScreenText( 11, "For: " + (DateTimeOffset.Now - this.timeSinceBgmStart).TotalMilliseconds + " / " + this.bgmDuration );
+			}
 		}
 
 		#region Use
@@ -93,6 +127,8 @@ namespace OneMoreFloor
 				.Ignore( this )
 				.Run();
 
+			DebugOverlay.TraceResult( tr );
+
 			// Nothing found, try a wider search
 			if ( !IsValidUseEntity( tr.Entity ) )
 			{
@@ -101,6 +137,8 @@ namespace OneMoreFloor
 					.HitLayer( CollisionLayer.Debris )
 					.Ignore( this )
 					.Run();
+
+				DebugOverlay.TraceResult( tr );
 			}
 
 			// Still no good? Bail.
