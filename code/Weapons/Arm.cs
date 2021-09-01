@@ -4,7 +4,8 @@
 partial class arm : Weapon
 {
 	//public override string ViewModelPath => "models/weapons/v_crowbar.vmdl";
-	public override float PrimaryRate => 3.5f;
+	public override float PrimaryRate => .25f;
+	public override float SecondaryRate => .15f;
 
 
 	public override void Spawn()
@@ -26,6 +27,7 @@ partial class arm : Weapon
 	public override void AttackPrimary()
 	{
 
+		//anim.SetParam("holdtype", 4);
 		(Owner as AnimEntity)?.SetAnimBool("b_attack", true);
 		if ( MeleeAttack() )
 		{
@@ -36,7 +38,17 @@ partial class arm : Weapon
 			OnMeleeMiss();
 		}
 
-		PlaySound( "crowbar" ); 
+		PlaySound( "swing1" );
+	}
+
+	public override void AttackSecondary()
+    {
+		PlaySound("cough1");
+
+		if (IsLocalPawn)
+		{
+			_ = new Sandbox.ScreenShake.Perlin(2.0f, 1.0f, 5.0f);
+		}
 	}
 
 	private bool MeleeAttack()
@@ -50,7 +62,7 @@ partial class arm : Weapon
 		{
 			if ( !tr.Entity.IsValid() ) continue;
 
-			tr.Surface.DoBulletImpact( tr );
+			//tr.Surface.DoBulletImpact( tr );
 
 			hit = true;
 
@@ -88,6 +100,8 @@ partial class arm : Weapon
 	{
 		Host.AssertClient();
 
+		PlaySound("slap1");
+
 		if ( IsLocalPawn )
 		{
 			_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
@@ -101,6 +115,6 @@ partial class arm : Weapon
 		anim.SetParam("holdtype", 4); // TODO this is shit
 		anim.SetParam("aimat_weight", 1.0f);
 		anim.SetParam("holdtype_handedness", 1);
-		anim.SetParam("holdtype_pose_hand", 0.07f);
+		anim.SetParam("holdtype_pose_hand", 0.0f);
 	}
 }
