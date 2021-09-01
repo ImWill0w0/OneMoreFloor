@@ -28,7 +28,7 @@ namespace OneMoreFloor
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
 
-			Controller = new WalkController();
+			Controller = new OMFWalkController();
 			Animator = new StandardPlayerAnimator();
 
 			MainCamera = LastCamera;
