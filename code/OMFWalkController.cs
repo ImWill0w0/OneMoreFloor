@@ -2,12 +2,18 @@
 
 namespace OneMoreFloor
 {
-	public class OMFWalkController : WalkController
+	public partial class OMFWalkController : WalkController
 	{
 		public OMFWalkController()
 		{
-			WalkSpeed = 150;
+			WalkSpeed = 140;
 			SprintSpeed = WalkSpeed;
+			DefaultSpeed = WalkSpeed;
+		}
+
+		public override void CheckJumpButton()
+		{
+			// ignored
 		}
 	}
 }
