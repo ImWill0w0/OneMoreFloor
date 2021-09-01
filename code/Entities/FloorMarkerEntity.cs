@@ -100,7 +100,10 @@ namespace OneMoreFloor.Entities
 	        if (!nextFloor.IsLobby)
 				nextFloor.IsOccupied = true;
 
-	        var _ = nextFloor.OnArrival.Fire( this );
+	        if ( eligibleToTeleport.Count > 0 )
+	        {
+		        var _ = nextFloor.OnArrival.Fire( this );
+	        }
 
 	        IsOccupied = false;
         }
