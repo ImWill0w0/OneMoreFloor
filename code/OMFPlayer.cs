@@ -57,7 +57,7 @@ namespace OneMoreFloor
 		}
 
 		[ClientRpc]
-		public void PlayFloorBgm( Vector3 origin, string bgmPath, int durationMs )
+		public void PlayFloorBgm( Vector3 origin, string bgmPath )
 		{
 			Host.AssertClient();
 
@@ -65,7 +65,6 @@ namespace OneMoreFloor
 
 			this.timeSinceBgmStart = DateTimeOffset.Now;
 			this.isBgmActive = true;
-			this.bgmDuration = durationMs;
 
 			this.bgm.Stop();
 
@@ -73,6 +72,12 @@ namespace OneMoreFloor
 			this.bgm.SetVolume( 1.0f );
 
 			DebugOverlay.Sphere( origin, 5, Color.Green, false, 2000 );
+		}
+
+		[ClientRpc]
+		public void StopFloorBgm()
+		{
+			this.bgm.SetVolume( 0 );
 		}
 
 		/// <summary>
@@ -98,6 +103,7 @@ namespace OneMoreFloor
 				// TODO: Watch, cough
 			}
 
+			/*
 			if ( IsClient )
 			{
 				if ( this.isBgmActive && (DateTimeOffset.Now - this.timeSinceBgmStart).TotalMilliseconds > this.bgmDuration )
@@ -105,10 +111,8 @@ namespace OneMoreFloor
 					this.isBgmActive = false;
 					this.bgm.SetVolume( 0 );
 				}
-
-				DebugOverlay.ScreenText( 10, "BGM Active: " + this.isBgmActive );
-				DebugOverlay.ScreenText( 11, "For: " + (DateTimeOffset.Now - this.timeSinceBgmStart).TotalMilliseconds + " / " + this.bgmDuration );
 			}
+			*/
 		}
 
 		#region Use

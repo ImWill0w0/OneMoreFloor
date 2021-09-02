@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Sandbox;
 
 namespace OneMoreFloor.Entities
@@ -7,9 +9,15 @@ namespace OneMoreFloor.Entities
     [Hammer.EditorSprite("editor/omf_floormarker.vmat")]
     public partial class FloorMarkerEntity : Entity
     {
-	    public bool IsOccupied { get; set; }
+	    [Net]
+	    public bool IsOccupied { get; private set; }
+
+	    [Net]
+	    public DoorEntity Door { get; private set; }
 
 	    private static Vector3 TeleportExtents => new( 120, 120, 120 );
+
+	    #region Hammer Properties
 
 	    /// <summary>
 	    /// Fires when a teleport to this floor is activated.
@@ -29,22 +37,102 @@ namespace OneMoreFloor.Entities
 	    public bool IsTop { get; set; }
 
 	    /// <summary>
+	    /// This floor's door entity.
+	    /// </summary>
+	    [Property( "door_target", FGDType = "target_destination", Title = "Door Entity")]
+	    public string DoorEntityName { get; set; }
+
+	    /// <summary>
 	    /// BGM for this floor. Will be faded in and out for each player in the floor.
 	    /// </summary>
 	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
 	    public string FloorBgm { get; set; } = "";
 
 	    /// <summary>
-	    /// The duration this floor's BGM should be played for.
-	    /// </summary>
-	    [Property( "bgm_duration", Group = "Sounds", Title = "BGM Duration(ms)" )]
-	    public int BgmDuration { get; set; } = 3000;
-
-	    /// <summary>
 	    /// The origin of the BGM.
 	    /// </summary>
 	    [Property( "bgm_origin_target", Group = "Sounds", FGDType = "target_destination", Title = "BGM Origin Entity")]
 	    public string BgmOriginName { get; set; }
+
+	    #endregion
+
+	    public override void Spawn()
+	    {
+		    base.Spawn();
+
+		    if ( IsServer )
+		    {
+			    if ( string.IsNullOrWhiteSpace( DoorEntityName ) )
+			    {
+				    Log.Error( $"Door entity for {EntityName} not set!" );
+				    return;
+			    }
+
+			    var ent = FindByName( DoorEntityName );
+			    if ( ent is not DoorEntity doorEnt )
+			    {
+				    Log.Error( $"Could not find door entity for {EntityName}!" );
+				    return;
+			    }
+
+			    Door = doorEnt;
+			    doorEnt.AddOutputEvent( "OnFullyOpen", this.OnDoorOpen );
+			    doorEnt.AddOutputEvent( "OnFullyClosed", this.OnDoorClosed );
+		    }
+	    }
+
+	    private ValueTask OnDoorOpen( Entity activator, float delay )
+	    {
+		    Log.Info( $"{EntityName} OnDoorOpen!" );
+
+		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
+		    var bgmOrigin = FindByName( BgmOriginName, this );
+
+		    foreach (var entity in eligible)
+		    {
+			    if ( !string.IsNullOrWhiteSpace( FloorBgm ) )
+			    {
+				    entity.PlayFloorBgm( To.Single( entity ), bgmOrigin.Position, FloorBgm );
+			    }
+		    }
+
+		    return ValueTask.CompletedTask;
+	    }
+
+	    private ValueTask OnDoorClosed( Entity activator, float delay )
+	    {
+		    Log.Info( $"{EntityName} OnDoorClosed!" );
+
+		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
+
+		    foreach (var entity in eligible)
+		    {
+			    entity.StopFloorBgm( To.Single( entity ) );
+		    }
+
+		    return ValueTask.CompletedTask;
+	    }
+
+	    // TODO: Use Physics and a BBox?
+	    private IList<Entity> GetEntsInReach()
+	    {
+		    // Get ICanRideElevator entities in range to teleport
+		    return All.Where( x =>
+		    {
+			    var localTransform = Transform.ToLocal( x.Transform );
+			    if ( localTransform.Position.x > TeleportExtents.x ||
+			         localTransform.Position.y > TeleportExtents.y ||
+			         localTransform.Position.z > TeleportExtents.z ||
+			         localTransform.Position.x < -TeleportExtents.x ||
+			         localTransform.Position.y < -TeleportExtents.y ||
+			         localTransform.Position.z < -TeleportExtents.z )
+			    {
+				    return false;
+			    }
+
+			    return true;
+		    } ).Where(x => x is ICanRideElevator).ToList();
+	    }
 
 	    [Event.Tick]
 	    private void Tick()
@@ -63,24 +151,8 @@ namespace OneMoreFloor.Entities
 		        return;
 
 	        // Get ICanRideElevator entities in range to teleport
-	        var eligibleToTeleport = All.Where( x =>
-	        {
-		        var localTransform = Transform.ToLocal( x.Transform );
-		        if ( localTransform.Position.x > TeleportExtents.x ||
-		             localTransform.Position.y > TeleportExtents.y ||
-		             localTransform.Position.z > TeleportExtents.z ||
-		             localTransform.Position.x < -TeleportExtents.x ||
-		             localTransform.Position.y < -TeleportExtents.y ||
-		             localTransform.Position.z < -TeleportExtents.z )
-		        {
-			        return false;
-		        }
-
-		        return true;
-	        } ).Where(x => x is ICanRideElevator).ToList();
+	        var eligibleToTeleport = this.GetEntsInReach();
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor( this );
-
-	        var bgmOrigin = FindByName( nextFloor.BgmOriginName, this );
 
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
 
@@ -88,11 +160,6 @@ namespace OneMoreFloor.Entities
 	        {
 		        var localTransform = Transform.ToLocal( teleEnt.Transform );
 		        var newTransform = nextFloor.Transform.ToWorld( localTransform );
-
-		        if ( !string.IsNullOrWhiteSpace( nextFloor.FloorBgm ) && teleEnt is OMFPlayer player )
-		        {
-			        player.PlayFloorBgm( To.Single( player ), bgmOrigin.Position, nextFloor.FloorBgm, nextFloor.BgmDuration );
-		        }
 
 		        teleEnt.Position = newTransform.Position;
 	        }
