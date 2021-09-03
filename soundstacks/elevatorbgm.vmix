@@ -1,0 +1,487 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	dsp_presets = [  ]
+	dsp_preview = null
+	Graphs = 
+	[
+		{
+			m_nGraphOutputChannels = -1
+			Name = "main"
+			m_nNodesCreated = 
+			[
+				1, 1, 0, 1,
+				0, 0, 1, 0,
+				0, 0, 0, 0,
+				0, 0, 0, 0,
+				0, 0, 0, 0,
+				0, 0, 1, 1,
+				0, 0,
+			]
+			m_EditorNodes = 
+			[
+				{
+					name = "audio.Track1"
+					friendlyname = "audio.Track1"
+					type = "audio.Track"
+					editor_pos = [ 96.0, 144.0 ]
+					editor_size = [ 140.0, 75.0 ]
+					properties = 
+					{
+						_class = "CMixSubmixTrack"
+						m_Comment = ""
+						m_trackName = "audio.Track1"
+						m_nChannels = -1
+						m_nMixDownRule = 0
+						m_sendOperator = "SendAllVoices"
+						m_Send1 = ""
+						m_Send2 = ""
+						m_Send3 = ""
+						m_Send4 = ""
+					}
+				},
+				{
+					name = "audio.Output1"
+					friendlyname = "audio.Output1"
+					type = "audio.Output"
+					editor_pos = [ 1232.0, 208.0 ]
+					editor_size = [ 140.0, 120.0 ]
+					properties = 
+					{
+						_class = "CMixOutput"
+						m_Comment = ""
+						m_name = "audio.Output1"
+						m_flVolume1 = 1.0
+						m_flVolume2 = 1.0
+						m_sendTo = ""
+					}
+				},
+				{
+					name = "audio.Filter1"
+					friendlyname = "audio.Filter1"
+					type = "audio.Filter"
+					editor_pos = [ 360.0, 184.0 ]
+					editor_size = [ 140.0, 135.0 ]
+					properties = 
+					{
+						_class = "CMixFilter"
+						m_Comment = ""
+						m_name = "audio.Filter1"
+						m_filterType = "FILTER_LOWPASS"
+						m_nChannels = -1
+						m_flFrequency = 973.152954
+						m_flQ = 0.43335
+						m_fldbGain = 0.0
+					}
+				},
+				{
+					name = "audio.Envelope1"
+					friendlyname = "audio.Envelope1"
+					type = "audio.Envelope"
+					editor_pos = [ 624.0, 216.0 ]
+					editor_size = [ 140.0, 105.0 ]
+					properties = 
+					{
+						_class = "CMixEnvelope"
+						m_Comment = ""
+						m_name = "audio.Envelope1"
+						m_flAttackTime = 300.0
+						m_flHoldTime = 500.0
+						m_flReleaseTime = 300.0
+					}
+				},
+				{
+					name = "audio.EQ81"
+					friendlyname = "audio.EQ81"
+					type = "audio.EQ8"
+					editor_pos = [ 904.0, 216.0 ]
+					editor_size = [ 186.0, 120.0 ]
+					properties = 
+					{
+						_class = "CMixEQ8"
+						m_Comment = ""
+						m_name = "audio.EQ81"
+						m_nChannels = -1
+						m_stages = 
+						[
+							{
+								m_filterType = "FILTER_HIGHPASS"
+								m_flFrequency = 345.991241
+								m_flQ = 3.0
+								m_fldbGain = 0.0
+								m_bEnable = true
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 492.844513
+								m_flQ = 3.0
+								m_fldbGain = -16.671196
+								m_bEnable = true
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 750.0
+								m_flQ = 3.0
+								m_fldbGain = 0.0
+								m_bEnable = false
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 1254.557251
+								m_flQ = 3.0
+								m_fldbGain = -17.649456
+								m_bEnable = true
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 2000.0
+								m_flQ = 3.0
+								m_fldbGain = 0.0
+								m_bEnable = false
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 3193.524902
+								m_flQ = 3.0
+								m_fldbGain = -19.116848
+								m_bEnable = true
+							},
+							{
+								m_filterType = "FILTER_PEAKING_EQ"
+								m_flFrequency = 5000.0
+								m_flQ = 3.0
+								m_fldbGain = 0.0
+								m_bEnable = false
+							},
+							{
+								m_filterType = "FILTER_HIGH_SHELF"
+								m_flFrequency = 5864.418457
+								m_flQ = 3.0
+								m_fldbGain = 11.820652
+								m_bEnable = true
+							},
+						]
+					}
+				},
+			]
+			m_EditorEdges = 
+			[
+				{
+					plug0 = "audio.Track1/audio:Source"
+					plug1 = "audio.Filter1/audio:In"
+				},
+				{
+					plug0 = "audio.Filter1/audio:Out"
+					plug1 = "audio.Envelope1/audio:In"
+				},
+				{
+					plug0 = "audio.Envelope1/audio:Out"
+					plug1 = "audio.EQ81/audio:In"
+				},
+				{
+					plug0 = "audio.EQ81/audio:Out"
+					plug1 = "audio.Output1/audio:In1"
+				},
+			]
+			m_EditorState = 
+			{
+				XAxis = 
+				{
+					pos = 0.0
+					min = -40856.0
+					max = 40394.0
+					scale = 0.41272
+				}
+				YAxis = 
+				{
+					pos = 0.0
+					min = -41064.0
+					max = 40840.0
+					scale = 0.41272
+				}
+			}
+			m_Submixes = 
+			[
+				{
+					name = "audio.Track1"
+					sendOperator = "SendAllVoices"
+					soloname = 4275089042
+					channels = -1
+					mixDownRule = 0
+				},
+			]
+			m_Processors = 
+			[
+				{
+					m_name = "audio.Filter1"
+					m_effectName = ""
+					m_nProcessorType = "VPROCESSOR_FILTER"
+					m_bAffectsGlobals = false
+					m_nChannels = -1
+					m_flxfade = 0.1
+					m_params = 
+					{
+						m_nFilterType = "FILTER_LOWPASS"
+						m_bEnabled = true
+						m_fldbGain = 0.0
+						m_flCutoffFreq = 973.152954
+						m_flQ = 0.43335
+					}
+				},
+				{
+					m_name = "audio.Envelope1"
+					m_effectName = ""
+					m_nProcessorType = "VPROCESSOR_ENVELOPE"
+					m_bAffectsGlobals = false
+					m_nChannels = -1
+					m_flxfade = 0.1
+					m_params = 
+					{
+						m_flAttackTimeMS = 300.0
+						m_flHoldTimeMS = 500.0
+						m_flReleaseTimeMS = 300.0
+					}
+				},
+				{
+					m_name = "audio.EQ81"
+					m_effectName = ""
+					m_nProcessorType = "VPROCESSOR_EQ8"
+					m_bAffectsGlobals = false
+					m_nChannels = -1
+					m_flxfade = 0.1
+					m_params = 
+					{
+						m_stages = 
+						[
+							{
+								m_nFilterType = "FILTER_HIGHPASS"
+								m_bEnabled = true
+								m_fldbGain = 0.0
+								m_flCutoffFreq = 345.991241
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = true
+								m_fldbGain = -16.671196
+								m_flCutoffFreq = 492.844513
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = false
+								m_fldbGain = 0.0
+								m_flCutoffFreq = 750.0
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = true
+								m_fldbGain = -17.649456
+								m_flCutoffFreq = 1254.557251
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = false
+								m_fldbGain = 0.0
+								m_flCutoffFreq = 2000.0
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = true
+								m_fldbGain = -19.116848
+								m_flCutoffFreq = 3193.524902
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_PEAKING_EQ"
+								m_bEnabled = false
+								m_fldbGain = 0.0
+								m_flCutoffFreq = 5000.0
+								m_flQ = 3.0
+							},
+							{
+								m_nFilterType = "FILTER_HIGH_SHELF"
+								m_bEnabled = true
+								m_fldbGain = 11.820652
+								m_flCutoffFreq = 5864.418457
+								m_flQ = 3.0
+							},
+						]
+					}
+				},
+			]
+			m_MixCommands = 
+			[
+				{
+					command = "submix.debug"
+					paramName = -19878254
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.meter"
+					paramName = 0
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = 0
+					inputValue1 = -1
+				},
+				{
+					command = "submix.spectrum"
+					paramName = -1790879076
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.process"
+					paramName = 1548827451
+					outputSubmix = 0
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = 0
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.debug"
+					paramName = 732448223
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.spectrum"
+					paramName = 732448223
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.process"
+					paramName = -1507429396
+					outputSubmix = 0
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = 1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.debug"
+					paramName = 2010609923
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.spectrum"
+					paramName = -29408888
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.process"
+					paramName = -2027502429
+					outputSubmix = 0
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = 2
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.debug"
+					paramName = -1539959702
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.spectrum"
+					paramName = -1539959702
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = -1
+					inputValue1 = -1
+				},
+				{
+					command = "submix.output"
+					paramName = 0
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = 0
+					inputValue1 = -1
+				},
+				{
+					command = "submix.meter"
+					paramName = 0
+					outputSubmix = -1
+					inputSubmix0 = 0
+					inputSubmix1 = -1
+					processor = -1
+					inputValue0 = 1
+					inputValue1 = -1
+				},
+			]
+			m_values = [ 1.0 ]
+			m_audioMeters = 
+			[
+				{
+					name = "audio.Track1"
+				},
+				{
+					name = "audio.Output1"
+				},
+			]
+			m_EditorPreview = 
+			{
+				volume = 1.0
+				mix = 1.0
+				voiceList = 
+				[
+					{
+						sound = "sounds/elevatorbg2.vsnd"
+						track = "audio.Track1"
+						isEvent = false
+					},
+				]
+			}
+		},
+	]
+	Editor = 
+	{
+		SelectedGraph = 0
+	}
+}
