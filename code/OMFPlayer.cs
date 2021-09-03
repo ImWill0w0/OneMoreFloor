@@ -11,10 +11,7 @@ namespace OneMoreFloor
 		[Net, Predicted] public ICamera MainCamera { get; set; }
 		public ICamera LastCamera { get; set; }
 
-		private DateTimeOffset timeSinceBgmStart;
 		private Sound bgm;
-		private bool isBgmActive = false;
-		private int bgmDuration;
 
 		public OMFPlayer()
 		{
@@ -63,13 +60,10 @@ namespace OneMoreFloor
 
 			Log.Info( "[C] Playing BGM: " + bgmPath );
 
-			this.timeSinceBgmStart = DateTimeOffset.Now;
-			this.isBgmActive = true;
-
 			this.bgm.Stop();
 
 			this.bgm = Sound.FromWorld( bgmPath, origin );
-			this.bgm.SetVolume( 1.0f );
+			this.bgm.SetVolume( 0.5f );
 
 			DebugOverlay.Sphere( origin, 5, Color.Green, false, 2000 );
 		}

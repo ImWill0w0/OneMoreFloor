@@ -48,12 +48,6 @@ namespace OneMoreFloor.Entities
 	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
 	    public string FloorBgm { get; set; } = "";
 
-	    /// <summary>
-	    /// The origin of the BGM.
-	    /// </summary>
-	    [Property( "bgm_origin_target", Group = "Sounds", FGDType = "target_destination", Title = "BGM Origin Entity")]
-	    public string BgmOriginName { get; set; }
-
 	    #endregion
 
 	    public override void Spawn()
@@ -76,7 +70,7 @@ namespace OneMoreFloor.Entities
 			    }
 
 			    Door = doorEnt;
-			    doorEnt.AddOutputEvent( "OnFullyOpen", this.OnDoorOpen );
+			    doorEnt.AddOutputEvent( "OnOpen", this.OnDoorOpen );
 			    doorEnt.AddOutputEvent( "OnFullyClosed", this.OnDoorClosed );
 		    }
 	    }
@@ -86,14 +80,10 @@ namespace OneMoreFloor.Entities
 		    Log.Info( $"{EntityName} OnDoorOpen!" );
 
 		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
-		    var bgmOrigin = FindByName( BgmOriginName, this );
 
 		    foreach (var entity in eligible)
 		    {
-			    if ( !string.IsNullOrWhiteSpace( FloorBgm ) )
-			    {
-				    entity.PlayFloorBgm( To.Single( entity ), bgmOrigin.Position, FloorBgm );
-			    }
+			    entity.StopFloorBgm( To.Single( entity ) );
 		    }
 
 		    return ValueTask.CompletedTask;
@@ -107,7 +97,10 @@ namespace OneMoreFloor.Entities
 
 		    foreach (var entity in eligible)
 		    {
-			    entity.StopFloorBgm( To.Single( entity ) );
+			    if ( !string.IsNullOrWhiteSpace( FloorBgm ) )
+			    {
+				    entity.PlayFloorBgm( To.Single( entity ), Position, FloorBgm );
+			    }
 		    }
 
 		    return ValueTask.CompletedTask;
