@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using System;
+using Sandbox;
 
 namespace OneMoreFloor
 {
@@ -10,6 +11,80 @@ namespace OneMoreFloor
 		private ModelEntity hat;
 
 		private bool dressed;
+
+		public enum BodyGroup
+		{
+			Legs,
+			Chest,
+			Feet,
+			Head
+		}
+
+		public void SetBodyModel( BodyGroup group, string model )
+		{
+			Host.AssertServer();
+
+			ModelPropData? propInfo = null;
+
+			switch ( group )
+			{
+				case BodyGroup.Legs:
+					this.pants.Delete();
+
+					this.pants = new ModelEntity();
+					this.pants.SetModel( model );
+					this.pants.SetParent( this, true );
+					this.pants.EnableShadowInFirstPerson = true;
+					this.pants.EnableHideInFirstPerson = true;
+
+					break;
+				case BodyGroup.Chest:
+					this.jacket.Delete();
+
+					this.jacket = new ModelEntity();
+					this.jacket.SetModel( model );
+					this.jacket.SetParent( this, true );
+					this.jacket.EnableShadowInFirstPerson = true;
+					this.jacket.EnableHideInFirstPerson = true;
+
+					propInfo = this.jacket.GetModel().GetPropData();
+
+					break;
+				case BodyGroup.Feet:
+					this.shoes.Delete();
+
+					this.shoes = new ModelEntity();
+					this.shoes.SetModel( model );
+					this.shoes.SetParent( this, true );
+					this.shoes.EnableShadowInFirstPerson = true;
+					this.shoes.EnableHideInFirstPerson = true;
+					break;
+			}
+
+			this.SetBodyGroup( "Legs", 1 );
+
+			if ( propInfo.HasValue && propInfo.Value.ParentBodyGroupName != null )
+			{
+				this.SetBodyGroup( propInfo.Value.ParentBodyGroupName, propInfo.Value.ParentBodyGroupValue );
+			}
+			else
+			{
+				this.SetBodyGroup( "Chest", 0 );
+			}
+
+			this.SetBodyGroup( "Feet", 1 );
+
+			if ( group == BodyGroup.Head )
+			{
+				this.hat.Delete();
+
+				this.hat = new ModelEntity();
+				this.hat.SetModel( model );
+				this.hat.SetParent( this, true );
+				this.hat.EnableShadowInFirstPerson = true;
+				this.hat.EnableHideInFirstPerson = true;
+			}
+		}
 
 		public void Dress()
 		{
