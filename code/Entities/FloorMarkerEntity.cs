@@ -37,12 +37,6 @@ namespace OneMoreFloor.Entities
 	    public bool IsTop { get; set; }
 
 	    /// <summary>
-	    /// This floor's door entity.
-	    /// </summary>
-	    [Property( "door_target", FGDType = "target_destination", Title = "Door Entity")]
-	    public string DoorEntityName { get; set; }
-
-	    /// <summary>
 	    /// BGM for this floor. Will be faded in and out for each player in the floor.
 	    /// </summary>
 	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
@@ -50,34 +44,16 @@ namespace OneMoreFloor.Entities
 
 	    #endregion
 
-	    public override void Spawn()
+	    /// <summary>
+	    /// Stop the elevator BGM.
+	    /// </summary>
+	    [Input]
+	    public void StopElevatorBgm( Entity activator = null )
 	    {
-		    base.Spawn();
+		    if ( !IsServer )
+			    return;
 
-		    if ( IsServer )
-		    {
-			    if ( string.IsNullOrWhiteSpace( DoorEntityName ) )
-			    {
-				    Log.Error( $"Door entity for {EntityName} not set!" );
-				    return;
-			    }
-
-			    var ent = FindByName( DoorEntityName );
-			    if ( ent is not DoorEntity doorEnt )
-			    {
-				    Log.Error( $"Could not find door entity for {EntityName}!" );
-				    return;
-			    }
-
-			    Door = doorEnt;
-			    doorEnt.AddOutputEvent( "OnOpen", this.OnDoorOpen );
-			    doorEnt.AddOutputEvent( "OnFullyClosed", this.OnDoorClosed );
-		    }
-	    }
-
-	    private ValueTask OnDoorOpen( Entity activator, float delay )
-	    {
-		    Log.Info( $"{EntityName} OnDoorOpen!" );
+		    Log.Info( $"StopElevatorBgm in {EntityName}!" );
 
 		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
 
@@ -85,13 +61,18 @@ namespace OneMoreFloor.Entities
 		    {
 			    entity.StopFloorBgm( To.Single( entity ) );
 		    }
-
-		    return ValueTask.CompletedTask;
 	    }
 
-	    private ValueTask OnDoorClosed( Entity activator, float delay )
+	    /// <summary>
+	    /// Start the elevator BGM.
+	    /// </summary>
+	    [Input]
+	    public void StartElevatorBgm( Entity activator = null )
 	    {
-		    Log.Info( $"{EntityName} OnDoorClosed!" );
+		    if ( !IsServer )
+			    return;
+
+		    Log.Info( $"StartElevatorBgm in {EntityName}!" );
 
 		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
 
@@ -102,8 +83,6 @@ namespace OneMoreFloor.Entities
 				    entity.PlayFloorBgm( To.Single( entity ), Position, FloorBgm );
 			    }
 		    }
-
-		    return ValueTask.CompletedTask;
 	    }
 
 	    // TODO: Use Physics and a BBox?

@@ -19,10 +19,11 @@
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	islobby(boolean) : "Is Lobby floor" : 0 : "Whether or not this floor is the lobby."
 	istop(boolean) : "Is Top floor" : 0 : "Whether or not this floor is the lobby."
-	door_target(target_destination) : "Door Entity" :  : "This floor's door entity."
 	floor_bgm(sound) [ group="Sounds" ] : "Floor BGM" : "" : "BGM for this floor. Will be faded in and out for each player in the floor."
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
+	input StopElevatorBgm(void) : "Stop the elevator BGM."
+	input StartElevatorBgm(void) : "Start the elevator BGM."
 	input Teleport(void) : "Activates teleport to an in this session unseen floor."
 
 	output OnArrival(void) : "Fires when a teleport to this floor is activated."
