@@ -1,15 +1,10 @@
-# sbox-minimal
+# One More Floor
 
-![Screenshot](https://files.facepunch.com/garry/8fc638dc-2c62-4ed6-b20a-69c2c5342a9c.jpg)
+![sbox-dev_XtQthcSXyf](https://user-images.githubusercontent.com/28235017/132083249-58b76783-1bae-4aa9-9d94-4143d2855a1e.jpg)
 
- Minimal gamemode for s&box.
+
+ elevator gamemode
  
  # Installing
  
- Download as a zip and put the minimum folder in your addons/ folder. It should show up in the menu allowing you to make a new game.
- 
- # Editing
- 
- Run the game to generate the project and open s&box.sln.
- 
- Editing the .cs, .html, .scss files should reflect their changes in game in realtime.
+ Download as a zip and put the OneMoreFloor folder in your addons/ folder. It should show up in the menu allowing you to make a new game.
