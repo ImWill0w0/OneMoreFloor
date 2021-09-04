@@ -1,5 +1,7 @@
 ﻿using Sandbox;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OneMoreFloor.Weapons;
 
 namespace OneMoreFloor.Player
@@ -13,6 +15,8 @@ namespace OneMoreFloor.Player
 		public ICamera LastCamera { get; set; }
 
 		private Sound bgm;
+
+		public IEnumerable<OMFPlayer> AllPlayers => Client.All.Select(x => x.Pawn).OfType<OMFPlayer>();
 
 		public OMFPlayer()
 		{
@@ -42,7 +46,10 @@ namespace OneMoreFloor.Player
 				DevController = null;
 			}
 
-			EnableAllCollisions = true;
+			// This is the only way I found to no-collide players for now
+			// Might have to change something in WalkController (the TraceBBox stuff) to actually do it properly
+			EnableAllCollisions = false;
+			
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
@@ -98,6 +105,11 @@ namespace OneMoreFloor.Player
 				// TODO: Watch, cough
 			}
 
+			if (IsClient)
+			{
+				PlayerGhosting();
+			}
+
 			/*
 			if ( IsClient )
 			{
@@ -108,6 +120,18 @@ namespace OneMoreFloor.Player
 				}
 			}
 			*/
+		}
+
+		private void PlayerGhosting()
+		{
+			foreach (OMFPlayer player in AllPlayers)
+			{
+				if (player == Local.Pawn) continue;
+
+				float distance = player.Position.Distance(Position);
+
+				player.SetAlpha(MathX.Clamp((distance - 25) / 10, 0, 1));
+			}
 		}
 
 		#region Use
@@ -194,6 +218,12 @@ namespace OneMoreFloor.Player
 			//TookDamage( lastDamage.Flags, lastDamage.Position, lastDamage.Force );
 
 			base.TakeDamage( info );
+		}
+
+		private void SetAlpha(float alpha)
+		{
+			RenderAlpha = alpha;
+			SetClothingAlpha(alpha);
 		}
 	}
 }

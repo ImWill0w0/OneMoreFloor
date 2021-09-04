@@ -123,6 +123,11 @@ namespace OneMoreFloor.Entities
 	        if ( !IsServer )
 		        return;
 
+	        IsOccupied = false;
+
+	        if ( IsTop )
+		        return;
+
 	        // Get ICanRideElevator entities in range to teleport
 	        var eligibleToTeleport = this.GetEntsInReach();
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
@@ -144,8 +149,6 @@ namespace OneMoreFloor.Entities
 	        {
 		        var _ = nextFloor.OnArrival.Fire( this );
 	        }
-
-	        IsOccupied = false;
         }
     }
 }
