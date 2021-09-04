@@ -11,6 +11,40 @@
 ]
 
 // 
+// OneMoreFloor.Acquirable : Sandbox.Prop 
+// 
+@PointClass model() = ent_omf_acquirable : "An acquirable model that can be worn by the player when used."
+[
+	model(studio) [report]: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) : "FX Color (R G B)" : "255 255 255" : "The FX color is used by the selected Render Mode."
+	renderamt(integer) [ group="Render Properties" ] : "FX Amount (0 - 255)" : 255 : "The FX amount is used by the selected Render Mode."
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	bodygroup_type(choices) : "Target Body Group" : 3 : "The body group this entity is to be attached to when picked up." = [
+		0 : "Legs"
+		1 : "Chest"
+		2 : "Feet"
+		3 : "Head"
+	]
+	bodymodel(studio) : "Body Model" :  : "The model to be used when attached to the player body."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" = [
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged"
+]
+
+// 
 // OneMoreFloor.Entities.FloorMarkerEntity : Sandbox.Entity 
 // 
 @PointClass iconsprite( "editor/omf_floormarker.vmat" ) = ent_omf_floormarker : "Marks an elevator floor for One More Floor."
