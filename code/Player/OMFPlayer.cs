@@ -126,11 +126,11 @@ namespace OneMoreFloor.Player
 		{
 			foreach (OMFPlayer player in AllPlayers)
 			{
-				if (player == this) continue;
+				if (player == Local.Pawn) continue;
 
 				float distance = player.Position.Distance(Position);
 
-				player.SetAlpha(MathX.Clamp((distance - 30) / 30, 0, 1));
+				player.SetAlpha(MathX.Clamp((distance - 25) / 10, 0, 1));
 			}
 		}
 
