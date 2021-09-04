@@ -229,7 +229,11 @@ namespace OneMoreFloor.Player
 		private void SetAlpha(float alpha)
 		{
 			RenderAlpha = alpha;
-			SetClothingAlpha(alpha);
+
+			foreach (ModelEntity ent in Children.OfType<ModelEntity>())
+			{
+				ent.RenderAlpha = alpha;
+			}
 		}
 	}
 }
