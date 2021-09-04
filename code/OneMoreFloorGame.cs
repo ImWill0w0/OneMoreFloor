@@ -50,7 +50,7 @@ namespace OneMoreFloor
 		public FloorMarkerEntity GetNextFloor()
 		{
 			var floors = All.OfType<FloorMarkerEntity>().ToList();
-			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby && !x.IsOccupied ).ToList();
+			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToList();
 
 			// If we've seen more floors than set as a goal, force people to the top floor
 			if ( this.seenFloors.Count > NumFloorsUntilTop )
