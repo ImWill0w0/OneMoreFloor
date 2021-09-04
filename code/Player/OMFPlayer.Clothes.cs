@@ -186,5 +186,13 @@ namespace OneMoreFloor.Player
 				this.hat.EnableHideInFirstPerson = true;
 			}
 		}
+
+		public void SetClothingAlpha(float alpha)
+		{
+			if (this.pants != null) this.pants.RenderAlpha = alpha;
+			if (this.jacket != null) this.jacket.RenderAlpha = alpha;
+			if (this.shoes != null) this.shoes.RenderAlpha = alpha;
+			if (this.hat != null) this.hat.RenderAlpha = alpha;
+		}
 	}
 }
