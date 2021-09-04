@@ -16,7 +16,8 @@ namespace OneMoreFloor.Player
 
 		private Sound bgm;
 
-		public IEnumerable<OMFPlayer> AllPlayers => Client.All.Select(x => x.Pawn).OfType<OMFPlayer>();
+		public static IEnumerable<OMFPlayer> AllPlayers => Client.All.Select(x => x.Pawn).OfType<OMFPlayer>();
+		public static OMFPlayer LocalPlayer => Local.Pawn as OMFPlayer;
 
 		public OMFPlayer()
 		{
@@ -141,7 +142,7 @@ namespace OneMoreFloor.Player
 			return ActiveChild is IUse use && use.IsUsable( this );
 		}
 
-		protected override Entity FindUsable()
+		public Entity GetUsableTrace()
 		{
 			if ( IsUseDisabled() )
 				return null;
@@ -152,7 +153,7 @@ namespace OneMoreFloor.Player
 				.Ignore( this )
 				.Run();
 
-			DebugOverlay.TraceResult( tr );
+			// DebugOverlay.TraceResult( tr );
 
 			// Nothing found, try a wider search
 			if ( !IsValidUseEntity( tr.Entity ) )
@@ -163,13 +164,18 @@ namespace OneMoreFloor.Player
 					.Ignore( this )
 					.Run();
 
-				DebugOverlay.TraceResult( tr );
+				// DebugOverlay.TraceResult( tr );
 			}
 
 			// Still no good? Bail.
 			if ( !IsValidUseEntity( tr.Entity ) ) return null;
 
 			return tr.Entity;
+		}
+
+		protected override Entity FindUsable()
+		{
+			return GetUsableTrace();
 		}
 
 		protected override void UseFail()

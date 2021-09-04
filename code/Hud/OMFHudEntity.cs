@@ -16,6 +16,7 @@ namespace OneMoreFloor.Hud
 			if ( IsClient )
 			{
 				//RootPanel.SetTemplate( "/minimalhud.html" );
+				RootPanel.AddChild<Crosshair>();
 				RootPanel.AddChild<ChatBox>();
 			}
 		}
