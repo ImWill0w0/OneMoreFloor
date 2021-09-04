@@ -16,6 +16,7 @@ namespace OneMoreFloor
 		public static int NumFloorsUntilTop { get; set; } = 6;
 
 		private List<string> seenFloors = new();
+		private int numSeen = 0;
 
 		public OneMoreFloorGame()
 		{
@@ -23,15 +24,17 @@ namespace OneMoreFloor
 
 			if ( IsServer )
 			{
-				Log.Info( "My Gamemode Has Created Serverside!" );
-
 				new OMFHudEntity();
 			}
+		}
 
-			if ( IsClient )
-			{
-				Log.Info( "My Gamemode Has Created Clientside!" );
-			}
+		public override void PostLevelLoaded()
+		{
+			if ( !IsServer )
+				return;
+
+			NumFloorsUntilTop = All.OfType<FloorMarkerEntity>().Count() - 3;
+			Log.Info( $"[S] Going to end after {NumFloorsUntilTop + 1}" );
 		}
 
 		private FloorMarkerEntity GetTopFloor()
@@ -53,8 +56,9 @@ namespace OneMoreFloor
 			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToList();
 
 			// If we've seen more floors than set as a goal, force people to the top floor
-			if ( this.seenFloors.Count > NumFloorsUntilTop )
+			if ( this.numSeen > NumFloorsUntilTop )
 			{
+				Log.Info( "[S] Seen enough floors, sending to top..." );
 				return this.GetTopFloor();
 			}
 
@@ -62,7 +66,7 @@ namespace OneMoreFloor
 			{
 				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
 
-				var randomFloor = floors.Where( x => !x.IsLobby && !x.IsOccupied ).Random();
+				var randomFloor = floors.Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).Random();
 				if ( randomFloor != null )
 				{
 					return randomFloor;
@@ -76,6 +80,7 @@ namespace OneMoreFloor
 			// Choose a random floor and add it to the list of seen floors
 			var nextFloor = floorsUnseen.Random();
 			this.seenFloors.Add( nextFloor.EntityName );
+			this.numSeen++;
 			return nextFloor;
 		}
 
