@@ -84,8 +84,8 @@ namespace OneMoreFloor
 			return nextFloor;
 		}
 
-		[ServerCmd("omf_debug_teleport")]
-		public static void DebugTriggerTeleport(string entName)
+		[ServerCmd("omf_debug_trigger")]
+		public static void DebugTrigger(string entName)
 		{
 			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
 
@@ -96,6 +96,25 @@ namespace OneMoreFloor
 			}
 
 			target.Teleport();
+		}
+
+		[ServerCmd("omf_debug_teleport")]
+		public static void DebugTeleport(string entName)
+		{
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+
+			if ( target == null )
+			{
+				Log.Error( $"Could not find entity with name '{entName}'" );
+				return;
+			}
+
+			foreach (var client in Client.All)
+			{
+				client.Pawn.Position = target.Position;
+			}
+
+			var _ = target.OnArrival.Fire( null, 10.0f );
 		}
 
 		/// <summary>

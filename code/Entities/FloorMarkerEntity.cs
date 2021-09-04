@@ -23,7 +23,7 @@ namespace OneMoreFloor.Entities
 	    /// <summary>
 	    /// Fires when a teleport to this floor is activated.
 	    /// </summary>
-	    private Output OnArrival { get; set; }
+	    public Output OnArrival { get; set; }
 
 	    /// <summary>
 	    /// Whether or not this floor is the lobby.
