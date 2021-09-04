@@ -4,11 +4,11 @@ using System.Linq;
 
 public class ViewModel : BaseViewModel
 {
-	protected float SwingInfluence => 0.05f;
-	protected float ReturnSpeed => 5.0f;
-	protected float MaxOffsetLength => 10.0f;
-	protected float BobCycleTime => 7;
-	protected Vector3 BobDirection => new Vector3( 0.0f, 1.0f, 0.5f );
+	protected float SwingInfluence => 0f;
+	protected float ReturnSpeed => 0f;
+	protected float MaxOffsetLength => 0f;
+	protected float BobCycleTime => 0;
+	protected Vector3 BobDirection => new Vector3( 0.0f, 0.0f, 0.0f );
 
 	private Vector3 swingOffset;
 	private float lastPitch;

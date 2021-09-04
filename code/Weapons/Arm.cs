@@ -3,9 +3,9 @@
 [Library( "weapon_arm", Title = "arm", Spawnable = true )]
 partial class arm : Weapon
 {
-	//public override string ViewModelPath => "models/weapons/v_crowbar.vmdl";
-	public override float PrimaryRate => .25f;
-	public override float SecondaryRate => .15f;
+	public override string ViewModelPath => "models/arm.vmdl";
+	public override float PrimaryRate => 5.25f;
+	public override float SecondaryRate => 5.15f;
 
 
 	public override void Spawn()
@@ -49,6 +49,8 @@ partial class arm : Weapon
 		{
 			_ = new Sandbox.ScreenShake.Perlin(2.0f, 1.0f, 5.0f);
 		}
+
+		ViewModelEntity?.SetAnimBool("cough", true);
 	}
 
 	private bool MeleeAttack()
@@ -92,7 +94,7 @@ partial class arm : Weapon
 			_ = new Sandbox.ScreenShake.Perlin();
 		}
 
-		ViewModelEntity?.SetAnimBool( "miss", true );
+		ViewModelEntity?.SetAnimBool( "slapmiss", true );
 	}
 
 	[ClientRpc]
@@ -107,7 +109,7 @@ partial class arm : Weapon
 			_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
 		}
 
-		ViewModelEntity?.SetAnimBool("fire", true );
+		ViewModelEntity?.SetAnimBool("slaphit", true );
 	}
 
 	public override void SimulateAnimator(PawnAnimator anim)
