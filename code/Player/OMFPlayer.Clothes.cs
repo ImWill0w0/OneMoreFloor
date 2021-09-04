@@ -1,7 +1,7 @@
 ﻿using System;
 using Sandbox;
 
-namespace OneMoreFloor
+namespace OneMoreFloor.Player
 {
 	public partial class OMFPlayer
 	{

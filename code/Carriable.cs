@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using OneMoreFloor.Weapons;
+using Sandbox;
 
 public partial class Carriable : BaseCarriable, IUse
 {

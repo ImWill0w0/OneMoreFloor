@@ -1,5 +1,5 @@
 // 
-// arm : Weapon 
+// OneMoreFloor.Weapons.ArmWeapon : OneMoreFloor.Weapons.Weapon 
 // 
 @PointClass = weapon_arm : ""
 [
@@ -11,9 +11,9 @@
 ]
 
 // 
-// OneMoreFloor.Acquirable : Sandbox.Prop 
+// OneMoreFloor.Entities.AcquirableClothesEntity : Sandbox.Prop 
 // 
-@PointClass model() = ent_omf_acquirable : "An acquirable model that can be worn by the player when used."
+@PointClass model() = ent_omf_acquirable : "An acquirable clothes model that can be worn by the player when used."
 [
 	model(studio) [report]: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

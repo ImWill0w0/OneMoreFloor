@@ -1,10 +1,11 @@
 ﻿using Sandbox;
 using System;
+using OneMoreFloor.Weapons;
 
-namespace OneMoreFloor
+namespace OneMoreFloor.Player
 {
 	[Library]
-	public partial class OMFPlayer : Player, ICanRideElevator
+	public partial class OMFPlayer : Sandbox.Player, ICanRideElevator
 	{
 		private DamageInfo lastDamage;
 
@@ -48,7 +49,7 @@ namespace OneMoreFloor
 
 			this.Dress();
 
-			Inventory.Add( new arm(), true );
+			Inventory.Add( new ArmWeapon(), true );
 
 			base.Respawn();
 		}

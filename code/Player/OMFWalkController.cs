@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace OneMoreFloor
+namespace OneMoreFloor.Player
 {
 	public partial class OMFWalkController : WalkController
 	{

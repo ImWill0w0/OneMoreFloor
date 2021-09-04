@@ -1,10 +1,11 @@
-﻿using Sandbox;
+﻿using OneMoreFloor.Player;
+using Sandbox;
 
-namespace OneMoreFloor
+namespace OneMoreFloor.Entities
 {
-	[Library("ent_omf_acquirable", Spawnable = true, Description = "An acquirable model that can be worn by the player when used.", Editable = true, Title = "Acquirable")]
+	[Library("ent_omf_acquirable", Spawnable = true, Description = "An acquirable clothes model that can be worn by the player when used.", Editable = true, Title = "Acquirable")]
 	[Hammer.Model]
-	public class Acquirable : Prop, IUse, ICanRideElevator
+	public class AcquirableClothesEntity : Prop, IUse, ICanRideElevator
 	{
 		/// <summary>
 		/// The body group this entity is to be attached to when picked up.

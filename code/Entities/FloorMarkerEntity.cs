@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OneMoreFloor.Player;
 using Sandbox;
 
 namespace OneMoreFloor.Entities
@@ -124,7 +125,7 @@ namespace OneMoreFloor.Entities
 
 	        // Get ICanRideElevator entities in range to teleport
 	        var eligibleToTeleport = this.GetEntsInReach();
-	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor( this );
+	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
 
 	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
 
