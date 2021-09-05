@@ -33,6 +33,8 @@ namespace OneMoreFloor
 			if ( !IsServer )
 				return;
 
+			this.seenFloors.Clear();
+			
 			NumFloorsUntilTop = All.OfType<FloorMarkerEntity>().Count() - 3;
 			Log.Info( $"[S] Going to end after {NumFloorsUntilTop + 1}" );
 		}
@@ -147,6 +149,30 @@ namespace OneMoreFloor
 			}
 
 			var _ = target.OnArrival.Fire( null, 10.0f );
+		}
+		
+		[ServerCmd("omf_test_all")]
+		public static void DebugTestAll()
+		{
+			// Reset number of & seen floors
+			Instance.PostLevelLoaded();
+
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.IsLobby );
+
+			if ( target == null )
+			{
+				Log.Error( "Could not find lobby.'" );
+				return;
+			}
+
+			foreach (var client in Client.All)
+			{
+				client.Pawn.Position = target.Position;
+			}
+
+			target.Teleport();
+
+			Global.TimeScale = 7.0f;
 		}
 
 		/// <summary>
