@@ -55,6 +55,9 @@ namespace OneMoreFloor
 		}
 
 		private FloorMarkerEntity GetRandomFloor() => All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).Random();
+
+		// Maybe we can swap this to something funny or an easter egg at some point
+		private FloorMarkerEntity GetLastResort() => this.GetTopFloor( true );
 		
 		// To consider: Do we want to count the seen floors per player? Reconciliation in multiplayer will be more complicated, but better when people join after the fact.
 		public FloorMarkerEntity GetNextFloor()
@@ -75,7 +78,15 @@ namespace OneMoreFloor
 				else
 				{
 					Log.Info( "[S] Top floor was occupied, going to random floor..." );
-					return this.GetRandomFloor();
+					
+					var random = this.GetRandomFloor();
+					if ( random != null )
+					{
+						return random;
+					}
+
+					// If there's no unoccupied floors for whatever reason, force people to the top floor
+					return this.GetLastResort();
 				}
 			}
 
@@ -90,8 +101,7 @@ namespace OneMoreFloor
 				}
 
 				// If there's no unoccupied floors for whatever reason, force people to the top floor
-				var topFloor = this.GetTopFloor( true );
-				return topFloor;
+				return this.GetLastResort();
 			}
 
 			// Choose a random floor and add it to the list of seen floors
