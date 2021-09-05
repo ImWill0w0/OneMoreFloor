@@ -46,9 +46,16 @@ namespace OneMoreFloor
 				throw new InvalidOperationException( "Top floor not found!" );
 			}
 
+			if ( top.IsOccupied )
+			{
+				return null;
+			}
+
 			return top;
 		}
 
+		private FloorMarkerEntity GetRandomFloor() => All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).Random();
+		
 		// To consider: Do we want to count the seen floors per player? Reconciliation in multiplayer will be more complicated, but better when people join after the fact.
 		public FloorMarkerEntity GetNextFloor()
 		{
@@ -59,14 +66,24 @@ namespace OneMoreFloor
 			if ( this.numSeen > NumFloorsUntilTop )
 			{
 				Log.Info( "[S] Seen enough floors, sending to top..." );
-				return this.GetTopFloor();
+				var top = this.GetTopFloor();
+
+				if ( top != null )
+				{
+					return top;
+				}
+				else
+				{
+					Log.Info( "[S] Top floor was occupied, going to random floor..." );
+					return this.GetRandomFloor();
+				}
 			}
 
 			if ( !floorsUnseen.Any() )
 			{
 				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
 
-				var randomFloor = floors.Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).Random();
+				var randomFloor = this.GetRandomFloor();
 				if ( randomFloor != null )
 				{
 					return randomFloor;
