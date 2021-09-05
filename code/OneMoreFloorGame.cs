@@ -54,7 +54,18 @@ namespace OneMoreFloor
 			return top;
 		}
 
-		private FloorMarkerEntity GetRandomFloor() => All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).Random();
+		private FloorMarkerEntity GetRandomFloor()
+		{
+			var allUnoccupied = All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToArray();
+			var random = allUnoccupied.Where( x => !this.seenFloors.Contains( x.EntityName ) ).Random();
+
+			if ( random != null )
+			{
+				return random;
+			}
+
+			return allUnoccupied.Random();
+		}
 
 		// Maybe we can swap this to something funny or an easter egg at some point
 		private FloorMarkerEntity GetLastResort() => this.GetTopFloor( true );
@@ -62,9 +73,8 @@ namespace OneMoreFloor
 		// To consider: Do we want to count the seen floors per player? Reconciliation in multiplayer will be more complicated, but better when people join after the fact.
 		public FloorMarkerEntity GetNextFloor()
 		{
-			var floors = All.OfType<FloorMarkerEntity>().ToList();
-			var floorsUnseen = floors.Where( x => !this.seenFloors.Contains( x.EntityName ) && !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToList();
-
+			var floors = All.OfType<FloorMarkerEntity>().ToArray();
+			
 			// If we've seen more floors than set as a goal, force people to the top floor
 			if ( this.numSeen > NumFloorsUntilTop )
 			{
@@ -90,22 +100,17 @@ namespace OneMoreFloor
 				}
 			}
 
-			if ( !floorsUnseen.Any() )
+			var nextFloor = this.GetRandomFloor();
+
+			if ( nextFloor == null )
 			{
-				Log.Info( "[S] No more unseen floors! Choosing random floor..." );
-
-				var randomFloor = this.GetRandomFloor();
-				if ( randomFloor != null )
-				{
-					return randomFloor;
-				}
-
+				Log.Info( "[S] All floors occupied, sending to top..." );
+				
 				// If there's no unoccupied floors for whatever reason, force people to the top floor
 				return this.GetLastResort();
 			}
 
 			// Choose a random floor and add it to the list of seen floors
-			var nextFloor = floorsUnseen.Random();
 			this.seenFloors.Add( nextFloor.EntityName );
 			this.numSeen++;
 			return nextFloor;
