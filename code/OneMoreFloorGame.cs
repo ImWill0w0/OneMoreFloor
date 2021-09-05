@@ -37,7 +37,7 @@ namespace OneMoreFloor
 			Log.Info( $"[S] Going to end after {NumFloorsUntilTop + 1}" );
 		}
 
-		private FloorMarkerEntity GetTopFloor()
+		private FloorMarkerEntity GetTopFloor( bool lastResort = false )
 		{
 			var top = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.IsTop );
 
@@ -46,7 +46,7 @@ namespace OneMoreFloor
 				throw new InvalidOperationException( "Top floor not found!" );
 			}
 
-			if ( top.IsOccupied )
+			if ( top.IsOccupied && !lastResort )
 			{
 				return null;
 			}
@@ -90,7 +90,7 @@ namespace OneMoreFloor
 				}
 
 				// If there's no unoccupied floors for whatever reason, force people to the top floor
-				var topFloor = this.GetTopFloor();
+				var topFloor = this.GetTopFloor( true );
 				return topFloor;
 			}
 
