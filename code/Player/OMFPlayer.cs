@@ -12,6 +12,7 @@ namespace OneMoreFloor.Player
 		private DamageInfo lastDamage;
 
 		[Net] public PawnController MinigameController { get; set; }
+		[Net] public PawnAnimator MinigameAnimator { get; set; }
 		[Net, Predicted] public ICamera MinigameCamera { get; set; }
 		[Net, Predicted] public Entity Minigame { get; set; }
 		
@@ -206,6 +207,7 @@ namespace OneMoreFloor.Player
 			Controller = null;
 			
 			MinigameController = null;
+			MinigameAnimator = null;
 			MinigameCamera = null;
 			Minigame = null;
 
@@ -229,6 +231,16 @@ namespace OneMoreFloor.Player
 			}
 
 			return base.GetActiveController();
+		}
+		
+		public override PawnAnimator GetActiveAnimator()
+		{
+			if ( this.MinigameAnimator != null )
+			{
+				return this.MinigameAnimator;
+			}
+
+			return base.GetActiveAnimator();
 		}
 		
 		public ICamera GetActiveCamera()

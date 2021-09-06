@@ -77,7 +77,7 @@ namespace OneMoreFloor.Entities.Arcade
 
 			player.Minigame = null;
 			player.MinigameController = null;
-			//player.VehicleAnimator = null;
+			player.MinigameAnimator = null;
 			player.MinigameCamera = null;
 			player.Parent = null;
 
@@ -95,6 +95,7 @@ namespace OneMoreFloor.Entities.Arcade
 				player.Minigame = this;
 				player.MinigameController = SetupController();
 				player.MinigameCamera = SetupCamera();
+				player.MinigameAnimator = SetupAnimator();
 
 				this.Owner = user;
 				
@@ -112,6 +113,8 @@ namespace OneMoreFloor.Entities.Arcade
 		protected virtual PawnController SetupController() => null;
 
 		protected virtual ICamera SetupCamera() => null;
+		
+		protected virtual PawnAnimator SetupAnimator() => null;
 
 		protected virtual void OnStartPlaying()
 		{

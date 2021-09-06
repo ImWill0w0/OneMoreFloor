@@ -17,6 +17,11 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 			return new CabCamera();
 		}
 
+		protected override PawnAnimator SetupAnimator()
+		{
+			return new CabAnimator();
+		}
+
 		protected override void OnStartPlaying()
 		{
 			base.OnStartPlaying();
