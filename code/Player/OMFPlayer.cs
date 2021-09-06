@@ -11,6 +11,10 @@ namespace OneMoreFloor.Player
 	{
 		private DamageInfo lastDamage;
 
+		[Net] public PawnController MinigameController { get; set; }
+		[Net, Predicted] public ICamera MinigameCamera { get; set; }
+		[Net, Predicted] public Entity Minigame { get; set; }
+		
 		[Net, Predicted] public ICamera MainCamera { get; set; }
 		public ICamera LastCamera { get; set; }
 
@@ -97,30 +101,26 @@ namespace OneMoreFloor.Player
 
 			if ( LifeState != LifeState.Alive )
 				return;
-
-			this.TickPlayerUse();
-			SimulateActiveChild( cl, ActiveChild );
-
-			if ( IsServer && Input.Pressed( InputButton.Attack1 ) )
+			
+			if ( MinigameController != null && DevController is NoclipController )
 			{
-				// TODO: Watch, cough
+				DevController = null;
 			}
 
-			if (IsClient)
+			this.TickPlayerUse();
+
+			if ( Minigame == null )
+			{
+				SimulateActiveChild( cl, ActiveChild );
+			}
+			
+
+			Camera = GetActiveCamera();
+
+			if ( IsClient )
 			{
 				PlayerGhosting();
 			}
-
-			/*
-			if ( IsClient )
-			{
-				if ( this.isBgmActive && (DateTimeOffset.Now - this.timeSinceBgmStart).TotalMilliseconds > this.bgmDuration )
-				{
-					this.isBgmActive = false;
-					this.bgm.SetVolume( 0 );
-				}
-			}
-			*/
 		}
 
 		private void PlayerGhosting()
@@ -204,12 +204,41 @@ namespace OneMoreFloor.Player
 			MainCamera = new SpectateRagdollCamera();
 			Camera = MainCamera;
 			Controller = null;
+			
+			MinigameController = null;
+			MinigameCamera = null;
+			Minigame = null;
 
 			EnableAllCollisions = false;
 			EnableDrawing = false;
 
 			Inventory.DropActive();
 			Inventory.DeleteContents();
+		}
+
+		public override PawnController GetActiveController()
+		{
+			if ( this.MinigameController != null )
+			{
+				return this.MinigameController;
+			}
+
+			if ( this.DevController != null )
+			{
+				return this.DevController;
+			}
+
+			return base.GetActiveController();
+		}
+		
+		public ICamera GetActiveCamera()
+		{
+			if ( this.MinigameCamera != null )
+			{
+				return this.MinigameCamera;
+			}
+
+			return this.MainCamera;
 		}
 
 		public override void TakeDamage( DamageInfo info )
