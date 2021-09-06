@@ -12,10 +12,11 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 
 			 var cab = pawn.Minigame;
 			 
-			 Pos = cab.Position + new Vector3( -35, 0, 65 );
+			 Pos = cab.Transform.PointToWorld(new Vector3( -35, 0, 65 ));
 			 FieldOfView = 60;
-			 Rot = Rotation.FromPitch( 15 );
-			 //	Rot = Rotation.Identity;
+			 
+			 // TODO: This should be a fixed point looking at the screen, but I can't maths
+			 Rot = pawn.EyeRot;
 		}
 		
 		public override void Update()
