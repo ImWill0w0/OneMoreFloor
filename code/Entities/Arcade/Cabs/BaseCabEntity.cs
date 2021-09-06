@@ -7,6 +7,11 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 	[Hammer.Model]
 	public partial class BaseCabEntity : MinigameEntity
 	{
+		/// <summary>
+		/// The height of the screen relative from the floor (used for camera direction).
+		/// </summary>
+		[Property( "Screen Height" )] public int ScreenHeight { get; set; } = 55;
+		
 		protected override PawnController SetupController()
 		{
 			return new CabController();
