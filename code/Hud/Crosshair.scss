@@ -8,11 +8,11 @@
         left: 50%;
         top: 50%;
         width: 100%;
-        background-color: yellow;
-        border-radius: 10px;
-        border: 1px #000 solid;
-        width: 6px;
-        height: 6px;
+        background-color: white;
+        border-radius: 5px;
+        //border: 1px #000 solid;
+        width: 5px;
+        height: 5px;
         transform: translate( -50% -50% );
 
         &.show {
