@@ -6,7 +6,6 @@ tools_asset_info.bin
 _bakeresourcecache
 tools_thumbnail_cache.bin
 *.vmat
-*.png
 *.tif
 *.vmdl
 *.dmx
