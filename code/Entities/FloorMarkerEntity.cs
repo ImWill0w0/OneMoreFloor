@@ -55,7 +55,7 @@ namespace OneMoreFloor.Entities
 		    if ( !IsServer )
 			    return;
 
-		    Log.Info( $"StopElevatorBgm in {EntityName}!" );
+		    Log.Info( $"StopElevatorBgm in {Name}!" );
 
 		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
 
@@ -74,7 +74,7 @@ namespace OneMoreFloor.Entities
 		    if ( !IsServer )
 			    return;
 
-		    Log.Info( $"StartElevatorBgm in {EntityName}!" );
+		    Log.Info( $"StartElevatorBgm in {Name}!" );
 
 		    var eligible = this.GetEntsInReach().OfType<OMFPlayer>();
 
@@ -112,7 +112,7 @@ namespace OneMoreFloor.Entities
 	    private void Tick()
 	    {
 		    DebugOverlay.Box( Position, -TeleportExtents, TeleportExtents, Color.White, depthTest: false);
-		    DebugOverlay.Text( Position, $"Floor: {EntityName}\nOccupied: {IsOccupied}", Color.White );
+		    DebugOverlay.Text( Position, $"Floor: {Name}\nOccupied: {IsOccupied}", Color.White );
 	    }
 
 	    /// <summary>
@@ -133,7 +133,7 @@ namespace OneMoreFloor.Entities
 	        var eligibleToTeleport = this.GetEntsInReach();
 	        var nextFloor = OneMoreFloorGame.Instance.GetNextFloor();
 
-	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.EntityName}" );
+	        Log.Info( $"[S] Teleporting {eligibleToTeleport.Count} entities to {nextFloor.Name}" );
 
 	        foreach ( var teleEnt in eligibleToTeleport )
 	        {

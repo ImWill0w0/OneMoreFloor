@@ -6,7 +6,7 @@ namespace OneMoreFloor.Entities.Arcade
 	[Library("ent_omf_minigame", Spawnable = false)]
 	public partial class MinigameEntity : ModelEntity, IUse
 	{
-		public Entity Owner { get; set; }
+		public Entity GameOwner { get; set; }
 		private TimeSince timeSinceOwnerLeft;
 
 		public override void Spawn()
@@ -57,7 +57,7 @@ namespace OneMoreFloor.Entities.Arcade
 		{
 			base.OnDestroy();
 
-			if ( this.Owner is OMFPlayer player )
+			if ( this.GameOwner is OMFPlayer player )
 			{
 				RemoveOwner( player );
 			}
@@ -67,7 +67,7 @@ namespace OneMoreFloor.Entities.Arcade
 		{
 			OnStopPlaying();
 			
-			this.Owner = null;
+			this.GameOwner = null;
 			this.timeSinceOwnerLeft = 0;
 
 			//ResetInput();
@@ -97,7 +97,7 @@ namespace OneMoreFloor.Entities.Arcade
 				player.MinigameCamera = SetupCamera();
 				player.MinigameAnimator = SetupAnimator();
 
-				this.Owner = user;
+				this.GameOwner = user;
 				
 				OnStartPlaying();
 			}
@@ -107,7 +107,7 @@ namespace OneMoreFloor.Entities.Arcade
 
 		public bool IsUsable( Entity user )
 		{
-			return this.Owner == null;
+			return this.GameOwner == null;
 		}
 
 		protected virtual PawnController SetupController() => null;

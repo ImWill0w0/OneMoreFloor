@@ -59,7 +59,7 @@ namespace OneMoreFloor
 		private FloorMarkerEntity GetRandomFloor()
 		{
 			var allUnoccupied = All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToArray();
-			var random = allUnoccupied.Where( x => !this.seenFloors.Contains( x.EntityName ) ).Random();
+			var random = allUnoccupied.Where( x => !this.seenFloors.Contains( x.Name ) ).Random();
 
 			if ( random != null )
 			{
@@ -113,7 +113,7 @@ namespace OneMoreFloor
 			}
 
 			// Choose a random floor and add it to the list of seen floors
-			this.seenFloors.Add( nextFloor.EntityName );
+			this.seenFloors.Add( nextFloor.Name );
 			this.numSeen++;
 			return nextFloor;
 		}
@@ -121,7 +121,7 @@ namespace OneMoreFloor
 		[ServerCmd("omf_debug_trigger")]
 		public static void DebugTrigger(string entName)
 		{
-			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.Name == entName );
 
 			if ( target == null )
 			{
@@ -135,7 +135,7 @@ namespace OneMoreFloor
 		[ServerCmd("omf_debug_teleport")]
 		public static void DebugTeleport(string entName)
 		{
-			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.Name == entName );
 
 			if ( target == null )
 			{
