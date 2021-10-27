@@ -40,7 +40,8 @@ namespace OneMoreFloor.Entities
 	    /// <summary>
 	    /// BGM for this floor. Will be faded in and out for each player in the floor.
 	    /// </summary>
-	    [Property( "floor_bgm", Group = "Sounds", FGDType = "sound", Title = "Floor BGM" )]
+	    [Property( "floor_bgm", Title = "Floor BGM" )]
+	    [FGDType("sound")]
 	    public string FloorBgm { get; set; } = "";
 
 	    #endregion

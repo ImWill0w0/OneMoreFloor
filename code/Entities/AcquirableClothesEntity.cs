@@ -16,7 +16,8 @@ namespace OneMoreFloor.Entities
 		/// <summary>
 		/// The model to be used when attached to the player body.
 		/// </summary>
-		[Property("bodymodel", Title = "Body Model", FGDType = "studio")]
+		[Property("bodymodel", Title = "Body Model")]
+		[FGDType("studio")]
 		public string BodyModel { get; set; }
 
 		public override void Spawn()
