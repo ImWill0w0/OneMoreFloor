@@ -269,11 +269,11 @@ namespace OneMoreFloor.Player
 
 		private void SetAlpha(float alpha)
 		{
-			RenderAlpha = alpha;
+			RenderColor = Color.White.WithAlpha( alpha );
 
 			foreach (ModelEntity ent in Children.OfType<ModelEntity>())
 			{
-				ent.RenderAlpha = alpha;
+				ent.RenderColor = RenderColor;
 			}
 		}
 	}
