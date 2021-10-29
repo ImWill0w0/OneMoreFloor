@@ -34,7 +34,7 @@ namespace OneMoreFloor
 				return;
 
 			this.seenFloors.Clear();
-			
+
 			NumFloorsUntilTop = All.OfType<FloorMarkerEntity>().Count() - 3;
 			Log.Info( $"[S] Going to end after {NumFloorsUntilTop + 1}" );
 		}
@@ -59,7 +59,7 @@ namespace OneMoreFloor
 		private FloorMarkerEntity GetRandomFloor()
 		{
 			var allUnoccupied = All.OfType<FloorMarkerEntity>().Where( x => !x.IsLobby && !x.IsTop && !x.IsOccupied ).ToArray();
-			var random = allUnoccupied.Where( x => !this.seenFloors.Contains( x.EntityName ) ).Random();
+			var random = allUnoccupied.Where( x => !this.seenFloors.Contains( x.Name ) ).Random();
 
 			if ( random != null )
 			{
@@ -71,12 +71,12 @@ namespace OneMoreFloor
 
 		// Maybe we can swap this to something funny or an easter egg at some point
 		private FloorMarkerEntity GetLastResort() => this.GetTopFloor( true );
-		
+
 		// To consider: Do we want to count the seen floors per player? Reconciliation in multiplayer will be more complicated, but better when people join after the fact.
 		public FloorMarkerEntity GetNextFloor()
 		{
 			var floors = All.OfType<FloorMarkerEntity>().ToArray();
-			
+
 			// If we've seen more floors than set as a goal, force people to the top floor
 			if ( this.numSeen > NumFloorsUntilTop )
 			{
@@ -90,7 +90,7 @@ namespace OneMoreFloor
 				else
 				{
 					Log.Info( "[S] Top floor was occupied, going to random floor..." );
-					
+
 					var random = this.GetRandomFloor();
 					if ( random != null )
 					{
@@ -107,13 +107,13 @@ namespace OneMoreFloor
 			if ( nextFloor == null )
 			{
 				Log.Info( "[S] All floors occupied, sending to top..." );
-				
+
 				// If there's no unoccupied floors for whatever reason, force people to the top floor
 				return this.GetLastResort();
 			}
 
 			// Choose a random floor and add it to the list of seen floors
-			this.seenFloors.Add( nextFloor.EntityName );
+			this.seenFloors.Add( nextFloor.Name );
 			this.numSeen++;
 			return nextFloor;
 		}
@@ -121,7 +121,7 @@ namespace OneMoreFloor
 		[ServerCmd("omf_debug_trigger")]
 		public static void DebugTrigger(string entName)
 		{
-			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.Name == entName );
 
 			if ( target == null )
 			{
@@ -135,7 +135,7 @@ namespace OneMoreFloor
 		[ServerCmd("omf_debug_teleport")]
 		public static void DebugTeleport(string entName)
 		{
-			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.EntityName == entName );
+			var target = All.OfType<FloorMarkerEntity>().FirstOrDefault( x => x.Name == entName );
 
 			if ( target == null )
 			{
@@ -150,7 +150,7 @@ namespace OneMoreFloor
 
 			var _ = target.OnArrival.Fire( null, 10.0f );
 		}
-		
+
 		[ServerCmd("omf_test_all")]
 		public static void DebugTestAll()
 		{

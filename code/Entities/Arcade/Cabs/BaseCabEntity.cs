@@ -32,7 +32,7 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 			base.OnStartPlaying();
 
 			// TODO: We should only do this on the client
-			Owner.EnableDrawing = false;
+			MinigameOwner.EnableDrawing = false;
 		}
 
 		protected override void OnStopPlaying()
@@ -40,7 +40,7 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 			base.OnStopPlaying();
 
 			// TODO: We should only do this on the client
-			Owner.EnableDrawing = true;
+			MinigameOwner.EnableDrawing = true;
 		}
 	}
 }
