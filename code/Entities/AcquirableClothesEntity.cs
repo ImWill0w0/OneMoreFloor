@@ -5,13 +5,21 @@ namespace OneMoreFloor.Entities
 {
 	[Library("ent_omf_acquirable", Spawnable = true, Description = "An acquirable clothes model that can be worn by the player when used.", Editable = true, Title = "Acquirable")]
 	[Hammer.Model]
-	public class AcquirableClothesEntity : Prop, IUse, ICanRideElevator
+	public partial class AcquirableClothesEntity : Prop, IUse, ICanRideElevator
 	{
+		public enum BodyGroup
+		{
+			Legs,
+			Chest,
+			Feet,
+			Head
+		}
+		
 		/// <summary>
 		/// The body group this entity is to be attached to when picked up.
 		/// </summary>
 		[Property( "bodygroup_type", Title = "Target Body Group" )]
-		public OMFPlayer.BodyGroup TargetBodyGroup { get; set; } = OMFPlayer.BodyGroup.Head;
+		public BodyGroup TargetBodyGroup { get; set; } = BodyGroup.Head;
 
 		/// <summary>
 		/// The model to be used when attached to the player body.

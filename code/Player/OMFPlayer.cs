@@ -1,20 +1,25 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using OneMoreFloor.Entities;
 using OneMoreFloor.Weapons;
+using Sandbox.Internal.Globals;
 
 namespace OneMoreFloor.Player
 {
+
 	[Library]
 	public partial class OMFPlayer : Sandbox.Player, ICanRideElevator
 	{
 		private DamageInfo lastDamage;
 
-		[Net] public PawnController MinigameController { get; set; }
-		[Net] public PawnAnimator MinigameAnimator { get; set; }
-		[Net, Predicted] public ICamera MinigameCamera { get; set; }
-		[Net, Predicted] public Entity Minigame { get; set; }
+		[Net] public PawnController? MinigameController { get; set; }
+		[Net] public PawnAnimator? MinigameAnimator { get; set; }
+		[Net, Predicted] public ICamera? MinigameCamera { get; set; }
+		[Net, Predicted] public Entity? Minigame { get; set; }
 		
 		[Net, Predicted] public ICamera MainCamera { get; set; }
 		public ICamera LastCamera { get; set; }
@@ -24,9 +29,23 @@ namespace OneMoreFloor.Player
 		public static IEnumerable<OMFPlayer> AllPlayers => Client.All.Select(x => x.Pawn).OfType<OMFPlayer>();
 		public static OMFPlayer LocalPlayer => Local.Pawn as OMFPlayer;
 
+		private readonly Clothing.Container clothingContainer = new();
+
+		/// <summary>
+		/// Default init
+		/// </summary>
 		public OMFPlayer()
 		{
 			Inventory = new Inventory( this );
+		}
+
+		/// <summary>
+		/// Initialize using this client
+		/// </summary>
+		public OMFPlayer( Client cl ) : this()
+		{
+			// Load clothing from client data
+			this.clothingContainer.LoadFromClient( cl );
 		}
 
 		public override void Spawn()
@@ -60,7 +79,7 @@ namespace OneMoreFloor.Player
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
 
-			this.Dress();
+			this.clothingContainer.DressEntity( this );
 
 			Inventory.Add( new ArmWeapon(), true );
 
@@ -79,7 +98,7 @@ namespace OneMoreFloor.Player
 			this.bgm = Sound.FromWorld( bgmPath, origin );
 			this.bgm.SetVolume( 0.5f );
 
-			DebugOverlay.Sphere( origin, 5, Color.Green, false, 2000 );
+			//DebugOverlay.Sphere( origin, 5, Color.Green, false, 2000 );
 		}
 
 		[ClientRpc]
@@ -275,6 +294,76 @@ namespace OneMoreFloor.Player
 			{
 				ent.RenderColor = RenderColor;
 			}
+		}
+		
+		public void SetBodyModel( AcquirableClothesEntity.BodyGroup group, string model )
+		{
+			/*
+			TODO: This broke because of the new Clothing api, we need to integrate with it
+			
+			Host.AssertServer();
+
+			ModelPropData? propInfo = null;
+
+			switch ( group )
+			{
+				case BodyGroup.Legs:
+					this.pants.Delete();
+
+					this.pants = new ModelEntity();
+					this.pants.SetModel( model );
+					this.pants.SetParent( this, true );
+					this.pants.EnableShadowInFirstPerson = true;
+					this.pants.EnableHideInFirstPerson = true;
+
+					break;
+				case BodyGroup.Chest:
+					this.jacket.Delete();
+
+					this.jacket = new ModelEntity();
+					this.jacket.SetModel( model );
+					this.jacket.SetParent( this, true );
+					this.jacket.EnableShadowInFirstPerson = true;
+					this.jacket.EnableHideInFirstPerson = true;
+
+					propInfo = this.jacket.GetModel().GetPropData();
+
+					break;
+				case BodyGroup.Feet:
+					this.shoes.Delete();
+
+					this.shoes = new ModelEntity();
+					this.shoes.SetModel( model );
+					this.shoes.SetParent( this, true );
+					this.shoes.EnableShadowInFirstPerson = true;
+					this.shoes.EnableHideInFirstPerson = true;
+					break;
+			}
+
+			this.SetBodyGroup( "Legs", 1 );
+
+			if ( propInfo.HasValue && propInfo.Value.ParentBodyGroupName != null )
+			{
+				this.SetBodyGroup( propInfo.Value.ParentBodyGroupName, propInfo.Value.ParentBodyGroupValue );
+			}
+			else
+			{
+				this.SetBodyGroup( "Chest", 0 );
+			}
+
+			this.SetBodyGroup( "Feet", 1 );
+
+			if ( group == BodyGroup.Head )
+			{
+				this.hat.Delete();
+
+				this.hat = new ModelEntity();
+				this.hat.SetModel( model );
+				this.hat.SetParent( this, true );
+				this.hat.EnableShadowInFirstPerson = true;
+				this.hat.EnableHideInFirstPerson = true;
+			}
+			*/
 		}
 	}
 }

@@ -182,7 +182,7 @@ namespace OneMoreFloor
 		{
 			base.ClientJoined( client );
 
-			var player = new OMFPlayer();
+			var player = new OMFPlayer( client );
 			client.Pawn = player;
 
 			player.Respawn();
