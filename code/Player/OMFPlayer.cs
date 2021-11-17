@@ -16,11 +16,11 @@ namespace OneMoreFloor.Player
 	{
 		private DamageInfo lastDamage;
 
-		[Net] public PawnController? MinigameController { get; set; }
-		[Net] public PawnAnimator? MinigameAnimator { get; set; }
-		[Net, Predicted] public ICamera? MinigameCamera { get; set; }
-		[Net, Predicted] public Entity? Minigame { get; set; }
-		
+		[Net] public PawnController MinigameController { get; set; }
+		[Net] public PawnAnimator MinigameAnimator { get; set; }
+		[Net, Predicted] public ICamera MinigameCamera { get; set; }
+		[Net, Predicted] public Entity Minigame { get; set; }
+
 		[Net, Predicted] public ICamera MainCamera { get; set; }
 		public ICamera LastCamera { get; set; }
 
@@ -74,7 +74,7 @@ namespace OneMoreFloor.Player
 			// This is the only way I found to no-collide players for now
 			// Might have to change something in WalkController (the TraceBBox stuff) to actually do it properly
 			EnableAllCollisions = false;
-			
+
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
@@ -121,7 +121,7 @@ namespace OneMoreFloor.Player
 
 			if ( LifeState != LifeState.Alive )
 				return;
-			
+
 			if ( MinigameController != null && DevController is NoclipController )
 			{
 				DevController = null;
@@ -133,7 +133,7 @@ namespace OneMoreFloor.Player
 			{
 				SimulateActiveChild( cl, ActiveChild );
 			}
-			
+
 
 			Camera = GetActiveCamera();
 
@@ -224,7 +224,7 @@ namespace OneMoreFloor.Player
 			MainCamera = new SpectateRagdollCamera();
 			Camera = MainCamera;
 			Controller = null;
-			
+
 			MinigameController = null;
 			MinigameAnimator = null;
 			MinigameCamera = null;
@@ -251,7 +251,7 @@ namespace OneMoreFloor.Player
 
 			return base.GetActiveController();
 		}
-		
+
 		public override PawnAnimator GetActiveAnimator()
 		{
 			if ( this.MinigameAnimator != null )
@@ -261,7 +261,7 @@ namespace OneMoreFloor.Player
 
 			return base.GetActiveAnimator();
 		}
-		
+
 		public ICamera GetActiveCamera()
 		{
 			if ( this.MinigameCamera != null )
@@ -290,7 +290,7 @@ namespace OneMoreFloor.Player
 		{
 			RenderColor = Color.White.WithAlpha( alpha );
 
-			foreach (ModelEntity ent in Children.OfType<ModelEntity>())
+			foreach (var ent in Children.OfType<ModelEntity>())
 			{
 				ent.RenderColor = RenderColor;
 			}

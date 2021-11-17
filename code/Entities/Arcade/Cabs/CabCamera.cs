@@ -11,14 +11,13 @@ namespace OneMoreFloor.Entities.Arcade.Cabs
 			 if ( pawn == null ) return;
 
 			 var cab = pawn.Minigame as BaseCabEntity;
-			 
 			 Position = cab.Transform.PointToWorld(new Vector3( -35, 0, 65 ));
 			 FieldOfView = 60;
-			 
+
 			 // TODO: This should be a fixed point looking at the screen, but I can't maths
 			 Rotation = Rotation.LookAt( cab.Position - Position.WithZ( Position.z - cab.ScreenHeight ) );
 		}
-		
+
 		public override void Update()
 		{
 			// ignored
