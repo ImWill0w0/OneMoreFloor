@@ -7,21 +7,21 @@
 			_class = "CBloomLayer"
 			m_name = "Bloom 0"
 			m_nOpacityPercent = 100
-			m_bVisible = true
+			m_bVisible = false
 			m_pLayerMask = null
 			m_params = 
 			{
 				m_blendMode = "BLOOM_BLEND_ADD"
-				m_flBloomStrength = 1.067
+				m_flBloomStrength = 0.844
 				m_flScreenBloomStrength = 1.0
 				m_flBlurBloomStrength = 1.0
-				m_flBloomThreshold = 0.0
-				m_flBloomThresholdWidth = 4.9995
+				m_flBloomThreshold = 0.755
+				m_flBloomThresholdWidth = 1.111
 				m_flSkyboxBloomStrength = 1.0
 				m_flBloomStartValue = 1.0
 				m_flBlurWeight = 
 				[
-					1.0, 1.0, 1.0, 1.0,
+					1.0, 0.08, 0.0, 0.0709,
 					1.0,
 				]
 				m_vBlurTint = 
@@ -42,14 +42,14 @@
 			m_pLayerMask = null
 			m_params = 
 			{
-				m_flExposureBias = 1.204
-				m_flShoulderStrength = 0.4096
-				m_flLinearStrength = 1.0
+				m_flExposureBias = 1.0432
+				m_flShoulderStrength = 0.3735
+				m_flLinearStrength = 0.9759
 				m_flLinearAngle = 0.0201
-				m_flToeStrength = 1.0
-				m_flToeNum = 0.0158
+				m_flToeStrength = 0.988
+				m_flToeNum = 0.012
 				m_flToeDenom = 1.0
-				m_flWhitePoint = 2.4822
+				m_flWhitePoint = 3.6384
 			}
 		},
 	]
