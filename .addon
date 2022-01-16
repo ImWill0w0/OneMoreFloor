@@ -1,4 +1,15 @@
 {
-    "sharedassets": "*.*",
-    "ident": "willow.omf"
+  "SharedAssets": null,
+  "Title": "Onemorefloor",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "onemorefloor",
+  "FullIdent": "local.onemorefloor",
+  "Schema": 1,
+  "NeedsUpgrade": false,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "HasCode": true,
+  "CodePath": "code",
+  "RootNamespace": "Sandbox"
 }
